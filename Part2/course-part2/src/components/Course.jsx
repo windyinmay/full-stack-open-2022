@@ -8,9 +8,13 @@ export default function Course(props) {
     // return <Content header={props.course.name} parts={props.course.parts}/>
     return (
         <div>
-            <Header header={props.course.name}/>
-            <Content parts ={props.course.parts}/>
-            <Total exercises={props.course.parts}/>
+            {props.courses.map((c,index) =>
+                <div key={index}>
+                    <Header names={c.name}/>
+                    <Content parts={c.parts}/>
+                    <Total parts={c.parts}/>
+                </div>
+            )}
         </div>
     )
 }

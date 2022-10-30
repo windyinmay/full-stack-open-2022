@@ -2,5 +2,5 @@ import React from 'react'
 
 export default function Header(props) {
 
-    return <h1>{props.header}</h1>
+    return <h2>{props.names}</h2>
 }
