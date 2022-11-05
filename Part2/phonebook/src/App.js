@@ -11,12 +11,13 @@ const App = () => {
         // console.log(e.target.value)
         setNewName(e.target.value);
     }
+    let exsitingNames = persons.map(p => p.name)
     const addPerson = (e) => {
         e.preventDefault();
         let personObject = {
             name: newName
         }
-        if(persons.map(p => p.name===newName)){
+        if(exsitingNames.includes(newName)){
             alert(`${newName} is already added to phonebook`)
         }else {
             setPersons(persons.concat(personObject))
