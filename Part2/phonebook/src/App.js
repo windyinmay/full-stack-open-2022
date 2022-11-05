@@ -14,17 +14,22 @@ const App = () => {
     const addPerson = (e) => {
         e.preventDefault();
         let personObject = {
-            content: newName
+            name: newName
         }
-        setPersons(persons.concat(personObject))
-        setNewName('');
+        if(persons.map(p => p.name===newName)){
+            alert(`${newName} is already added to phonebook`)
+        }else {
+            setPersons(persons.concat(personObject))
+            setNewName('');
+        }
     }
     return (
         <div>
             <h2>Phonebook</h2>
             <PhoneBookForm name={newName} handleFormChange={handleFormChange} addPerson={addPerson}/>
             <h2>Numbers</h2>
-            <Numbers persons={persons}/>
+            {/*<Numbers persons={persons}/>*/}
+            {persons.map((p,index) => <li key={index}>{p.name}</li>)}
         </div>
     )
 }
