@@ -6,7 +6,7 @@ export default function Numbers({persons}) {
         <div>
             {persons.map((person, index) => {
                 <li key={index}>
-                    {console.log(person.name)}
+                    {person.name}
                 </li>
             })}
         </div>
