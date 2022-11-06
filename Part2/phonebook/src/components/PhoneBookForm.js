@@ -9,7 +9,15 @@ export default function PhoneBookForm(props) {
                     <input
                     type="text"
                     value={props.name}
-                    onChange={props.handleFormChange}
+                    onChange={props.handleFormNameChange}
+                    />
+                </div>
+                <div>
+                    number:
+                    <input
+                        type="text"
+                        value={props.phone}
+                        onChange={props.handleFormPhoneChange}
                     />
                 </div>
                 <div>
