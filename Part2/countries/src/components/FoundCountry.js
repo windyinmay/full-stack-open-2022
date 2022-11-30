@@ -24,6 +24,9 @@ export default function FoundCountry({countriesFilter}) {
             <br/>
             <div>
                 <img src = {countriesFilter.map(c => c.flags.png)}  alt='Country flag' />
+
+
+                <h2>Weather in  {countriesFilter.map(c => c.capital)}</h2>
             </div>
         </div>
     )
