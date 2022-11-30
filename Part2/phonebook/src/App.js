@@ -46,13 +46,21 @@ const App = () => {
             setNewName('');
             setNewPhone('');
         }
+        axios
+            .post('http://localhost:3001/persons', personObject)
+            .then(res => {
+                console.log(res);
+                setPersons(persons.concat(res.data));
+                setNewName('');
+                setNewPhone('');
+            })
     }
     // console.log(filterNames)
     return (
         <div>
             <h2>Phonebook</h2>
             <Filter handleFilter = {handleFilter}/>
-            <h3>Add a new</h3>
+            <h2>Add a new</h2>
             <PhoneBookForm
                 name={newName}
                 handleFormNameChange={handleFormNameChange}
@@ -60,7 +68,7 @@ const App = () => {
                 phone = {newPhone}
                 handleFormPhoneChange ={handleFormNumberChange}
             />
-            <h3>Numbers</h3>
+            <h2>Numbers</h2>
             <Persons persons={filterNames}/>
         </div>
     )
