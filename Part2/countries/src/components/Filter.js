@@ -1,10 +1,15 @@
 import React from 'react';
+import FoundCountry from './FoundCountry'
 
-export default function Filter(props) {
-
+export default function Filter({countriesFilter}){
+    const message = "Too many matches, specify another filter";
+    const searchResult = countriesFilter.map(c=> <li>{c.name.common}</li>)
+    console.log(countriesFilter)
     return(
         <div>
-            find countries <input type='text' onChange={props.handleSearch}/>
+            {/*{countriesFilter.map(c=> <li>{c.name.common}</li>)}*/}
+            {countriesFilter.length === 1 ? <FoundCountry countriesFilter = {countriesFilter}/>
+                : countriesFilter.length <= 10 ? searchResult: message}
         </div>
     )
 }

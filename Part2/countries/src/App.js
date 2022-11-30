@@ -6,27 +6,29 @@ import axios from "axios";
 
 function App() {
     const [countries, setCountries] = useState([]);
-    const [input, setInput] = useState('');
+    const [input, setInput] = useState('')
     useEffect(() => {
-        axios.get('https://restcountries.com/v3.1/all')
-            .then(res => {
-                // console.log(res.data)
-                setCountries(res.data)
+        axios
+            .get('https://restcountries.com/v3.1/all')
+            .then(response => {
+                console.log('promise fulfilled')
+                setCountries(response.data)
             })
-            .catch(err=> console.log(err))
-    },[input])
+    }, [])
+
     const handleSearch = (e) => {
-        // console.log(e.target.value)
         setInput(e.target.value.toLowerCase())
     }
-    const filterCountries = countries.filter(c =>
+
+    const countriesFilter = countries.filter(c =>
         c.name.common.toLowerCase().includes(input.trim().toLowerCase()))
-    // console.log(filterCountries)
+
+    console.log('render', countries.length, 'countries')
     return (
     <div>
-        <Filter handleSearch={handleSearch}/>
-        {/*{filterCountries.length > 0 && <Countries filterCountries={filterCountries}/>}*/}
-        {filterCountries.length > 0 && <SearchCountries filterCountries={filterCountries}/>}
+        <SearchCountries input={input} handleSearch = {handleSearch}/>
+        <Filter countriesFilter = {countriesFilter}/>
+        {/*{countries.length > 0 && countries.map(c => <li>{c.name.common}</li>)}*/}
     </div>
   );
 }
