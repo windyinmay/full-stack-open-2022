@@ -2,7 +2,8 @@ import React from 'react';
 
 export default function FoundCountry({countriesFilter}) {
     const languages = countriesFilter.map(c => c.languages);
-    console.log(languages)
+    // const flag = countriesFilter.map(c => c.flags.png)
+    // console.log(Object.values(languages[0]))
     return(
         <div>
             <br/>
@@ -18,7 +19,11 @@ export default function FoundCountry({countriesFilter}) {
             <div>
                 <p><b>languages:</b></p>
                 <br/>
-                <p></p>
+                <p>{Object.values(languages[0]).map((l, index) => <li key={index}>{l}</li>)}</p>
+            </div>
+            <br/>
+            <div>
+                <img src = {countriesFilter.map(c => c.flags.png)}  alt='Country flag' />
             </div>
         </div>
     )
