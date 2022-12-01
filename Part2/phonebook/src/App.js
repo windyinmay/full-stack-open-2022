@@ -61,20 +61,21 @@ const App = () => {
                 console.log('fail')
             })
     }
-    const deletePerson = (id) => {
-        const person = persons.find(p => p.id === id);
-        let deletePerson = {...person}
+    const deletePerson = (person) => {
+        const {id, name} = person;
+        const confirmMsg = window.confirm(`Delete ${person.name} ?`)
         console.log(person)
+
+        confirmMsg &&
         personService
-            .update(id, deletePerson).then(returnedPerson => {
-                setPersons(persons.map(p => p.id !== id? p : returnedPerson))
-                window.confirm(`Delete ${person.name} ?`)
+            .deletePerson(id)
+            .then(() => {
+                setPersons(persons.map(p => p.id !== id))
         })
             .catch(err => {
                 alert(
                     `the person with name '${person.name}' was already deleted from server`
                 )
-                setPersons(persons.filter(p => p.id !==id))
             })
     }
     // console.log(filterNames)
