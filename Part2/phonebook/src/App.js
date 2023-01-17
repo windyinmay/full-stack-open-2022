@@ -64,13 +64,14 @@ const App = () => {
     const deletePerson = (person) => {
         const {id, name} = person;
         const confirmMsg = window.confirm(`Delete ${person.name} ?`)
-        console.log(person)
+    //     console.log(person.id)
 
         confirmMsg &&
         personService
             .deletePerson(id)
             .then(() => {
-                setPersons(persons.map(p => p.id !== id))
+                const updatedList = persons.filter(person => person.id !== id)
+                setPersons(updatedList)
         })
             .catch(err => {
                 alert(
@@ -78,6 +79,21 @@ const App = () => {
                 )
             })
     }
+
+    // const deletePerson = person => {
+    //     const url = `http://localhost:3001/persons/${id}`
+    //     const person = persons.find(p => p.id === id)
+    //     console.log(person)
+    //     const confirmMsg = window.confirm(`Delete ${person.name} ?`)
+        // const updatedList = persons.slice(id,1)
+        // confirmMsg &&
+        // axios.put(url, updatedList).then(res => res.data)
+        // .catch(err => {
+        //                 alert(
+        //                     `the person with name '${person.name}' was already deleted from server`
+        //                 )
+        //             })
+
     // console.log(filterNames)
     return (
         <div>
@@ -92,7 +108,7 @@ const App = () => {
                 handleFormPhoneChange ={handleFormNumberChange}
             />
             <h2>Numbers</h2>
-            <Persons persons={filterNames} deletePerson ={deletePerson}/>
+            {persons.length > 0} && <Persons persons={filterNames} deletePerson ={deletePerson}/>
         </div>
     )
 }
