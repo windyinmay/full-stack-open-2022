@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react';
-import axios from 'axios';
 import personService from './services/persons'
 import PhoneBookForm from "./components/PhoneBookForm";
 import Filter from "./components/Filter";
@@ -7,8 +6,7 @@ import Persons from "./components/Persons";
 
 const App = () => {
     const [persons, setPersons] = useState([])
-    const [newName, setNewName] = useState('')
-    const [newPhone, setNewPhone] = useState('')
+    const [newContact, setNewContact] = useState({name: '', number: ''})
     const [filter, setFilter] = useState('')
 
     useEffect(() => {
@@ -24,46 +22,48 @@ const App = () => {
             })
 
     },[])
-    const handleFormNameChange = (e) => {
-        // console.log(e.target.value)
-        setNewName(e.target.value);
-    }
-    const handleFormNumberChange = (e) => {
-        // console.log(e.target.value)
-        setNewPhone(e.target.value);
-    }
+    // const handleFormNameChange = (e) => {
+    //     // console.log(e.target.value)
+    //     setNewName(e.target.value);
+    // }
+    // const handleFormNumberChange = (e) => {
+    //     // console.log(e.target.value)
+    //     setNewPhone(e.target.value);
+    //}
+    const handleFormChange = (e) => setNewContact({...newContact, [e.target.name] : e.target.value})
+
     const handleFilter = (e) => setFilter(e.target.value.toLowerCase());
-    const filterNames = persons && persons.filter(p => p.name.toLowerCase().includes(filter));
-    let exsitingNames = persons.map(p => p.name)
+    // let exsitingNames = persons.map(p => p.name)
     const addPerson = (e) => {
         e.preventDefault();
-        let personObject = {
-            name: newName,
-            number: newPhone,
-            // id: `nn${Math.floor(Math.random()*100000) + 1}`
-            id: persons[persons.length-1].id + 1
-        }
-        if(exsitingNames.includes(newName)){
-            alert(`${newName} is already added to phonebook`)
+        const exsitingNames = persons.filter(p=> p.name.toLowerCase() === newContact.name.trim().toLowerCase())
+        // let personObject = {
+        //     name: newName,
+        //     number: newPhone,
+        //     // id: `nn${Math.floor(Math.random()*100000) + 1}`
+        //     id: persons[persons.length-1].id + 1
+        // }
+        if(exsitingNames.length > 0){
+            alert(`${newContact.name} is already added to phonebook`)
         }else {
-            setPersons(persons.concat(personObject))
-            setNewName('');
-            setNewPhone('');
-        }
-        personService
-            .create(personObject)
+        //     setPersons(persons.concat(personObject))
+        //     setNewName('');
+        //     setNewPhone('');
+        // }
+            personService
+            .create(newContact)
             .then(returnedPerson => {
                 setPersons(persons.concat(returnedPerson));
-                setNewName('');
-                setNewPhone('');
+                setNewContact({name: '', number: ''})
             })
             .catch(err => {
                 console.log('fail')
             })
+        }
     }
     const deletePerson = (person) => {
         const {id, name} = person;
-        const confirmMsg = window.confirm(`Delete ${person.name} ?`)
+        const confirmMsg = window.confirm(`Delete ${person.name}?`)
     //     console.log(person.id)
 
         confirmMsg &&
@@ -93,22 +93,21 @@ const App = () => {
         //                     `the person with name '${person.name}' was already deleted from server`
         //                 )
         //             })
-
-    // console.log(filterNames)
+        console.log(persons)
+        const filterNames = persons.length > 0 && persons.filter(person => person.name.toLowerCase().includes(filter));    
+        console.log(filterNames)
     return (
         <div>
             <h2>Phonebook</h2>
             <Filter handleFilter = {handleFilter}/>
             <h2>Add a new</h2>
             <PhoneBookForm
-                name={newName}
-                handleFormNameChange={handleFormNameChange}
+                newContact={newContact}
+                handleFormChange={handleFormChange}
                 addPerson={addPerson}
-                phone = {newPhone}
-                handleFormPhoneChange ={handleFormNumberChange}
             />
             <h2>Numbers</h2>
-            {persons.length > 0} && <Persons persons={filterNames} deletePerson ={deletePerson}/>
+            {filterNames.length > 0 && <Persons persons={filterNames} deletePerson ={deletePerson}/>}
         </div>
     )
 }

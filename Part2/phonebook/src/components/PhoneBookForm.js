@@ -1,23 +1,25 @@
 import React from 'react';
 
-export default function PhoneBookForm(props) {
+export default function PhoneBookForm({addPerson, newContact, handleFormChange}) {
     return(
         <div>
-            <form onSubmit={props.addPerson}>
+            <form onSubmit={addPerson}>
                 <div>
                     name:
                     <input
-                    type="text"
-                    value={props.name}
-                    onChange={props.handleFormNameChange}
+                        name="name"
+                        type="text"
+                        value={newContact.name}
+                        onChange={handleFormChange}
                     />
                 </div>
                 <div>
                     number:
                     <input
+                        name="number"
                         type="text"
-                        value={props.phone}
-                        onChange={props.handleFormPhoneChange}
+                        value={newContact.number}
+                        onChange={handleFormChange}
                     />
                 </div>
                 <div>
