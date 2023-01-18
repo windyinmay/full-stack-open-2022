@@ -8,6 +8,7 @@ const App = () => {
     const [persons, setPersons] = useState([])
     const [newContact, setNewContact] = useState({name: '', number: ''})
     const [filter, setFilter] = useState('')
+    const [updateMsg, setUpdateMsg] = useState(null)
 
     useEffect(() => {
         console.log('effect')
@@ -44,7 +45,16 @@ const App = () => {
         //     id: persons[persons.length-1].id + 1
         // }
         if(exsitingNames.length > 0){
-            alert(`${newContact.name} is already added to phonebook`)
+            // alert(`${newContact.name} is already added to phonebook`)
+            const confirmation = window.confirm(`${newContact.name} is already added to phonebook, replace the old number with a new one?`)
+            
+            confirmation &&
+            personService.update(exsitingNames[0].id, newContact).then(updatedContact => {
+                setPersons(persons.map(p => p.id === updatedContact.id ? updatedContact : p));
+                setNewContact({name: '', number: ''});
+                setUpdateMsg(`Sucessfully updated ${updatedContact.name}`);
+
+            })
         }else {
         //     setPersons(persons.concat(personObject))
         //     setNewName('');
@@ -93,9 +103,9 @@ const App = () => {
         //                     `the person with name '${person.name}' was already deleted from server`
         //                 )
         //             })
-        console.log(persons)
+        // console.log(persons)
         const filterNames = persons.length > 0 && persons.filter(person => person.name.toLowerCase().includes(filter));    
-        console.log(filterNames)
+        // console.log(filterNames)
     return (
         <div>
             <h2>Phonebook</h2>
