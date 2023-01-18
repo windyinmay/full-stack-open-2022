@@ -60,7 +60,7 @@ const App = () => {
                 setPersons(persons.filter(p => p.id !== updatedContact.id))
                 })
                 .catch(err => {
-                    setUpdateMsg(err.response.data.error);
+                    setUpdateMsg('failed');
                     setTimeout(()=> setUpdateMsg(null), 5000)
                 })
         }else {
@@ -77,7 +77,8 @@ const App = () => {
                 setTimeout(() => setUpdateMsg(null), 5000)
             })
             .catch(err => {
-                console.log('fail')
+                setUpdateMsg('failed');
+                setTimeout(()=> setUpdateMsg(null), 5000)
             })
         }
     }
@@ -91,14 +92,14 @@ const App = () => {
             .deletePerson(id)
             .then(() => {
                 const updatedList = persons.filter(person => person.id !== id)
-                setUpdateMsg(`Deleted ${person.name}`);
+                setUpdateMsg(`${person.name} removed`);
                 setTimeout(() => setUpdateMsg(null), 5000)
                 setPersons(updatedList)
         })
-            .catch(err => {
-                alert(
-                    `the person with name '${person.name}' was already deleted from server`
-                )
+            .catch(error => {
+                setUpdateMsg(`the person with name '${person.name}' was already removed from server`);
+                setTimeout(() => setUpdateMsg(null), 5000)
+                setPersons(persons.filter(p => p.id !== id))
             })
     }
 

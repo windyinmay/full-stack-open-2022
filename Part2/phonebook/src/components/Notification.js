@@ -10,7 +10,7 @@ const Notification = ({message}) => {
                 {message}
             </div>
         );
-    }else if(message.includes('Deleted')){
+    }else if(message.includes('removed') || message.includes('failed')){
         return (
             <div className='deletingMessage'>
                 {message}
