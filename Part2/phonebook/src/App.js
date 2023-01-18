@@ -3,6 +3,7 @@ import personService from './services/persons'
 import PhoneBookForm from "./components/PhoneBookForm";
 import Filter from "./components/Filter";
 import Persons from "./components/Persons";
+import Notification from './components/Notification';
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -53,8 +54,15 @@ const App = () => {
                 setPersons(persons.map(p => p.id === updatedContact.id ? updatedContact : p));
                 setNewContact({name: '', number: ''});
                 setUpdateMsg(`Sucessfully updated ${updatedContact.name}`);
-
-            })
+                setTimeout(() => {
+                    setUpdateMsg(null)
+                },5000)
+                setPersons(persons.filter(p => p.id !== updatedContact.id))
+                })
+                .catch(err => {
+                    setUpdateMsg(err.response.data.error);
+                    setTimeout(()=> setUpdateMsg(null), 5000)
+                })
         }else {
         //     setPersons(persons.concat(personObject))
         //     setNewName('');
@@ -65,6 +73,8 @@ const App = () => {
             .then(returnedPerson => {
                 setPersons(persons.concat(returnedPerson));
                 setNewContact({name: '', number: ''})
+                setUpdateMsg(`Added ${returnedPerson.name}`);
+                setTimeout(() => setUpdateMsg(null), 5000)
             })
             .catch(err => {
                 console.log('fail')
@@ -81,6 +91,8 @@ const App = () => {
             .deletePerson(id)
             .then(() => {
                 const updatedList = persons.filter(person => person.id !== id)
+                setUpdateMsg(`Deleted ${person.name}`);
+                setTimeout(() => setUpdateMsg(null), 5000)
                 setPersons(updatedList)
         })
             .catch(err => {
@@ -108,7 +120,8 @@ const App = () => {
         // console.log(filterNames)
     return (
         <div>
-            <h2>Phonebook</h2>
+            <h1>Phonebook</h1>
+            <Notification message={updateMsg}/>
             <Filter handleFilter = {handleFilter}/>
             <h2>Add a new</h2>
             <PhoneBookForm
