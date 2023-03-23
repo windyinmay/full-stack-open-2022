@@ -5,12 +5,13 @@ const baseUrl = "/api/persons";
 
 const getAll = () => {
   const request = axios.get(baseUrl);
-  const nonExisting = {
-    id: 10000,
-    name: "this person is not saved to the server",
-    number: "00000",
-  };
-  return request.then((res) => res.data.concat(nonExisting));
+  // const nonExisting = {
+  //   id: 10000,
+  //   name: "this person is not saved to the server",
+  //   number: "00000",
+  // };
+  return request.then((res) => res.data);
+  // return request.then((res) => res.data.concat(nonExisting));
 };
 
 const create = (newObject) => {
