@@ -20,9 +20,15 @@ blogsRouter.get('/:id', (request, response, next) => {
   })
 
 blogsRouter.post('/', (request, response, next) => {
-    const blog = new Blog(request.body)
-  
-    blog
+    const {title, author, url, likes} = request.body
+    const blogObj = new Blog({
+      title: title,
+      author: author,
+      url: url,
+      likes: likes
+    })
+
+    blogObj
       .save()
       .then(result => {
         response.status(201).json(result)
