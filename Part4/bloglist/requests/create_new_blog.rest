@@ -3,7 +3,7 @@ content-type: application/json
 //this empty line is required to have
 
 {
- "title": "testing post request",
+ "title": "testing",
   "author": "Pham",
   "url": "https://",
   "likes": 123

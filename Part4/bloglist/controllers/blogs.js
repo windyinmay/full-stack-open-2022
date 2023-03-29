@@ -21,23 +21,42 @@ blogsRouter.get("/:id", (request, response, next) => {
 
 blogsRouter.post("/", (request, response, next) => {
   const { title, author, url, likes } = request.body;
+
+  if (!title) {
+    return response.status(400).json({
+      error: "title is missing",
+    });
+  }
+
   const blogObj = new Blog({
-    title: title,
-    author: author,
-    url: url,
-    likes: likes,
+    title,
+    author,
+    url,
+    likes,
   });
-  Blog.find({ title: title }).then((blog) => {
-    if (blog.length > 0) {
-      response.status(400).json({
-        error: `Blog's title already exists`,
-      });
-    }
-  });
-  blogObj
-    .save()
-    .then((result) => {
-      response.status(201).json(result);
+
+  Blog.find({ title: title, author: author })
+    .then((blog) => {
+      if (blog.length > 0) {
+        response.status(400).json({
+          error: `This blog already exists`,
+        });
+      } else {
+        blogObj
+          .save()
+          .then((result) => {
+            response.status(201).json(result);
+          })
+          .catch((error) => next(error));
+      }
+    })
+    .catch((error) => next(error));
+});
+
+blogsRouter.delete("/:id", (request, response, next) => {
+  Blog.findByIdAndRemove(request.params.id)
+    .then(() => {
+      response.status(204).end();
     })
     .catch((error) => next(error));
 });
