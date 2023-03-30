@@ -34,8 +34,8 @@ export default function BlogForm({ addBlog, newBlog, handleFormChange }) {
         <div>
           Likes:
           <input
-            name="title"
-            type="text"
+            name="likes"
+            type="number"
             value={newBlog.likes}
             onChange={handleFormChange}
           />
