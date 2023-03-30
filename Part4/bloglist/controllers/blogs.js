@@ -46,6 +46,7 @@ blogsRouter.post("/", (request, response, next) => {
         blogObj
           .save()
           .then((result) => {
+            console.log("blog saved!");
             response.status(201).json(result);
           })
           .catch((error) => next(error));
@@ -58,6 +59,27 @@ blogsRouter.delete("/:id", (request, response, next) => {
   Blog.findByIdAndRemove(request.params.id)
     .then(() => {
       response.status(204).end();
+    })
+    .catch((error) => next(error));
+});
+
+blogsRouter.put("/:id", (request, response, next) => {
+  const { title, author, url, likes } = request.body;
+
+  const blog = {
+    title,
+    author,
+    url,
+    likes,
+  };
+
+  Blog.findByIdAndUpdate(
+    request.params.id,
+    { blog },
+    { new: true, runValidators: true, context: "query" }
+  )
+    .then((updatedBlog) => {
+      response.json(updatedBlog);
     })
     .catch((error) => next(error));
 });
