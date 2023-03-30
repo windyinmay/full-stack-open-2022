@@ -25,7 +25,7 @@ export default function BlogForm({ addBlog, newBlog, handleFormChange }) {
         <div>
           URL:
           <input
-            name="URL"
+            name="url"
             type="text"
             value={newBlog.url}
             onChange={handleFormChange}

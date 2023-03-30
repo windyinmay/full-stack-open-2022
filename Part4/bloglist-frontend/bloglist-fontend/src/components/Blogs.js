@@ -1,13 +1,14 @@
 import React from "react";
 
-const Blogs = ({ blogs }) => {
+const Blogs = ({ blogs, deleteBlog }) => {
   return (
     <div>
       {blogs.map((blog) => (
         <li className="note" key={blog.id}>
-          {blog.title} - {blog.author} - {blog.url} - {blog.likes}
+          {blog.title}- {blog.author}- {blog.url}- {blog.likes}
           {}
-          {/* <button onClick={() => deletePerson(p)}>delete</button> */}
+          <button onClick={() => deleteBlog(blog)}>delete</button>
+          ---***---
         </li>
       ))}
     </div>

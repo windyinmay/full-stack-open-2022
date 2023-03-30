@@ -83,6 +83,27 @@ function App() {
     }
   };
 
+  const deleteBlog = (blog) => {
+    const { id, title } = blog;
+    const confirmationMsg = window.confirm(`Delete the blog ${blog.title}?`);
+
+    confirmationMsg &&
+      blogService
+        .deleteBlog(id)
+        .then(() => {
+          const updatedBlog = blogs.filter((blog) => blog.id !== id);
+          setUpdateMsg(`${blog.title} has been removed.`);
+          setTimeout(() => setUpdateMsg(null), 5000);
+          setBlogs(updatedBlog);
+        })
+        .catch((error) => {
+          setUpdateMsg(
+            `The blog with the title '${blog.title}' was removed from the server`
+          );
+          setTimeout(() => setUpdateMsg(null), 5000);
+          setBlogs(blogs.filter((blog) => blog.id !== id));
+        });
+  };
   const filterTitles =
     blogs.length > 0 &&
     blogs.filter((blog) => blog.title.toLowerCase().includes(filter));
@@ -99,7 +120,9 @@ function App() {
         addBlog={addBlog}
       />
       <h2>List of the blogs</h2>
-      {filterTitles.length > 0 && <Blogs blogs={filterTitles} />}
+      {filterTitles.length > 0 && (
+        <Blogs blogs={filterTitles} deleteBlog={deleteBlog} />
+      )}
     </div>
   );
 }
