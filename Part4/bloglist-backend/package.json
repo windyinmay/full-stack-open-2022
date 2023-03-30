@@ -1,0 +1,32 @@
+{
+  "name": "part4",
+  "version": "1.0.0",
+  "description": "fullstackopen23-part4",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest --verbose"
+  },
+  "proxy": "http://localhost:3003",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/windyinmay/full-stack-open-2022.git"
+  },
+  "author": "Anh Pham",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/windyinmay/full-stack-open-2022/issues"
+  },
+  "homepage": "https://github.com/windyinmay/full-stack-open-2022#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.3"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22"
+  }
+}

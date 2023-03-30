@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs HTTP/1.1 
+content-type: application/json
+//this empty line is required to have
+
+{
+ "title": "testing12",
+  "author": "Pham",
+  "url": "https://",
+  "likes": 123
+}
