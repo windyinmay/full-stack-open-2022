@@ -34,9 +34,10 @@ blogsRouter.post("/", (request, response, next) => {
     url,
     likes,
   });
-
+  //Recheck the find method below, it does not work yet
   Blog.find({ title: title, author: author })
     .then((blog) => {
+      console.log(blog);
       if (blog.length > 0) {
         response.status(400).json({
           error: `This blog already exists`,
