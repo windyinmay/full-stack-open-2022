@@ -22,11 +22,11 @@ blogsRouter.get("/:id", (request, response, next) => {
 blogsRouter.post("/", (request, response, next) => {
   const { title, author, url, likes } = request.body;
 
-  if (!title) {
-    return response.status(400).json({
-      error: "title is missing",
-    });
-  }
+  // if (!title) {
+  //   return response.status(400).json({
+  //     error: "title is missing",
+  //   });
+  // }
 
   const blogObj = new Blog({
     title,
