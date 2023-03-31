@@ -79,7 +79,7 @@ export default function BlogForm({ addBlog, newBlog, handleFormChange }) {
         <TextField
           sx={{ marginBottom: 2 }}
           name="url"
-          type="text"
+          type="url"
           label="URL"
           value={newBlog.url}
           onChange={handleFormChange}
