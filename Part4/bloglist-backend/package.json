@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "lint": "eslint --fix --ext .js,.jsx ."
   },
   "proxy": "http://localhost:3003",
   "repository": {
@@ -26,6 +27,7 @@
     "mongoose": "^7.0.3"
   },
   "devDependencies": {
+    "eslint": "^8.37.0",
     "jest": "^29.5.0",
     "nodemon": "^2.0.22"
   }
