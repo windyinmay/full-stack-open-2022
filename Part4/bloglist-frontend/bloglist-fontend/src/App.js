@@ -6,13 +6,15 @@ import Notification from "./components/Notification";
 import Blogs from "./components/Blogs";
 import BlogForm from "./components/BlogForm";
 
-function App() {
+import Container from "@mui/material/Container";
+
+const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [newBlog, setNewBlog] = useState({
     title: "",
     author: "",
     url: "",
-    number: 0,
+    likes: 0,
   });
   const [filter, setFilter] = useState("");
   const [updateMsg, setUpdateMsg] = useState(null);
@@ -38,7 +40,7 @@ function App() {
   const addBlog = (e) => {
     e.preventDefault();
     const existingBlogs = blogs.filter(
-      (blog) => blog.title.toLowerCase() === newBlog.name.trim().toLowerCase()
+      (blog) => blog.title.toLowerCase() === newBlog.title.trim().toLowerCase()
     );
 
     if (existingBlogs.length > 0) {
@@ -55,7 +57,7 @@ function App() {
                 blog.id === updatedBlog.id ? updatedBlog : blog
               )
             );
-            setNewBlog({ title: "", author: "", url: "", number: 0 });
+            setNewBlog({ title: "", author: "", url: "", likes: 0 });
             setUpdateMsg(`Successfully updated blog ${updatedBlog.title}`);
             setTimeout(() => {
               setUpdateMsg(null);
@@ -71,21 +73,21 @@ function App() {
         .create(newBlog)
         .then((returnedBlog) => {
           setBlogs(blogs.concat(returnedBlog));
-          setNewBlog({ title: "", author: "", url: "", number: 0 });
+          setNewBlog({ title: "", author: "", url: "", likes: 0 });
           setUpdateMsg(`Added ${returnedBlog.title}`);
           setTimeout(() => setUpdateMsg(null), 5000);
         })
         .catch((error) => {
-          setUpdateMsg(error.res.data.error);
+          setUpdateMsg(error.response.data.error);
           setTimeout(() => setUpdateMsg(null), 5000);
-          console.log(error.res.data.error);
+          console.log(error.response.data.error);
         });
     }
   };
 
   const deleteBlog = (blog) => {
     const { id, title } = blog;
-    const confirmationMsg = window.confirm(`Delete the blog ${blog.title}?`);
+    const confirmationMsg = window.confirm(`Delete the blog ${title}?`);
 
     confirmationMsg &&
       blogService
@@ -109,7 +111,13 @@ function App() {
     blogs.filter((blog) => blog.title.toLowerCase().includes(filter));
 
   return (
-    <div className="App">
+    <Container
+      sx={{
+        marginLeft: 2,
+        width: "auto",
+        height: "100vh",
+      }}
+    >
       <h1>Blog list</h1>
       <Notification message={updateMsg} />
       <Filter handleFilter={handleFilter} />
@@ -123,8 +131,8 @@ function App() {
       {filterTitles.length > 0 && (
         <Blogs blogs={filterTitles} deleteBlog={deleteBlog} />
       )}
-    </div>
+    </Container>
   );
-}
+};
 
 export default App;
