@@ -88,3 +88,17 @@ describe('total likes', () => {
     expect(result).toBe(0);
   });
 });
+
+describe('the favorite blog', () => {
+
+  const theFavoriteBlog = {
+    title: 'Canonical string reduction',
+    author: 'Edsger W. Dijkstra',
+    likes: 12,
+  };
+
+  test('of a list with many blogs has the most likes', () => {
+    const result = listHelper.favoriteBlog(listWithManyBlogs);
+    expect(result).toEqual(theFavoriteBlog);
+  });
+});
