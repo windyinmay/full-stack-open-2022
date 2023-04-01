@@ -1,10 +1,19 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 
-blogsRouter.get('/', (request, response) => {
-  Blog.find({}).then((blogs) => {
-    response.json(blogs);
-  });
+// the below is promise way, blog.find() method returns a promise
+// and we can access the result of the operation by registering a callback function
+// with the then method.
+// blogsRouter.get('/', (request, response) => {
+//   Blog.find({}).then((blogs) => {
+//     response.json(blogs);
+//   });
+// });
+
+//change to async and await
+blogsRouter.get('/', async (request, response) => {
+  const blogs = await Blog.find({});
+  response.json(blogs);
 });
 
 blogsRouter.get('/:id', (request, response, next) => {
@@ -45,9 +54,9 @@ blogsRouter.post('/', (request, response, next) => {
       } else {
         blogObj
           .save()
-          .then((result) => {
+          .then((savedBlog) => {
             console.log('blog saved!');
-            response.status(201).json(result);
+            response.status(201).json(savedBlog);
           })
           .catch((error) => next(error));
       }
