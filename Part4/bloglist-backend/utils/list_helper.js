@@ -62,8 +62,15 @@ const mostBlogs = (blogs) => {
   return theMostBlog;
 };
 
-
+const mostLikes = (blogs) => {
+  const findTheMostLikes = _.map(_.groupBy(blogs, 'author'), (likes, author) => ({
+    author: author,
+    likes: _.sumBy(likes, 'likes')
+  }));
+  const theMostLikes = _.orderBy(findTheMostLikes, 'likes', 'desc');
+  return theMostLikes[0];
+};
 
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostBlogs
+  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 };

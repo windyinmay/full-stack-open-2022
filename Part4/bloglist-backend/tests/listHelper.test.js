@@ -103,7 +103,7 @@ describe('the favorite blog', () => {
   });
 });
 
-describe('the most blog', () => {
+describe('the most blogs', () => {
   const theMostBlog = {
     author: 'Robert C. Martin',
     blogs: 3
@@ -113,4 +113,16 @@ describe('the most blog', () => {
     const result = listHelper.mostBlogs(listWithManyBlogs);
     expect(result).toEqual(theMostBlog);
   });
+});
+
+describe('the most likes', () => {
+  const theMostLikes = {
+    author: 'Edsger W. Dijkstra',
+    likes: 17
+  };
+
+  test('of the list with many blogs', () => {
+    const result = listHelper.mostLikes(listWithManyBlogs);
+    expect(result).toEqual(theMostLikes);
+  })
 });
