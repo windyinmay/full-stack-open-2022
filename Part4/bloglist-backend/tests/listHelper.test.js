@@ -121,8 +121,8 @@ describe('the most likes', () => {
     likes: 17
   };
 
-  test('of the list with many blogs', () => {
+  test('of the list with many blogs is', () => {
     const result = listHelper.mostLikes(listWithManyBlogs);
     expect(result).toEqual(theMostLikes);
-  })
+  });
 });
