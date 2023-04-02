@@ -1,5 +1,7 @@
 const config = require('./utils/config');
 const express = require('express');
+//to eliminate the catch use express async errors
+require('express-async-errors');
 const app = express();
 const cors = require('cors');
 const blogsRouter = require('./controllers/blogs');
