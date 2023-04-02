@@ -59,26 +59,6 @@ blogsRouter.post('/', async (request, response, next) => {
     next(exception);
   }
 });
-//Recheck the find method below, it does not work yet
-//   Blog.find({ title: title, author: author })
-//     .then((blog) => {
-//       console.log(blog);
-//       if (blog.length > 0) {
-//         response.status(400).json({
-//           error: 'This blog already exists',
-//         });
-//       } else {
-//         blogObj
-//           .save()
-//           .then((savedBlog) => {
-//             console.log('blog saved!');
-//             response.status(201).json(savedBlog);
-//           })
-//           .catch((error) => next(error));
-//       }
-//     })
-//     .catch((error) => next(error));
-// });
 
 blogsRouter.delete('/:id', (request, response, next) => {
   Blog.findByIdAndRemove(request.params.id)
