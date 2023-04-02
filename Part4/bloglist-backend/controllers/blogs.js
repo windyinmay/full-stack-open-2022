@@ -28,14 +28,14 @@ blogsRouter.get('/:id', (request, response, next) => {
     .catch((error) => next(error));
 });
 
-blogsRouter.post('/', (request, response, next) => {
+blogsRouter.post('/', async (request, response, next) => {
   const { title, author, url, likes } = request.body;
 
-  // if (!title) {
-  //   return response.status(400).json({
-  //     error: "title is missing",
-  //   });
-  // }
+  if (!title) {
+    return response.status(400).json({
+      error: 'title is missing',
+    });
+  }
 
   const blogObj = new Blog({
     title,
@@ -44,25 +44,33 @@ blogsRouter.post('/', (request, response, next) => {
     likes,
   });
   //Recheck the find method below, it does not work yet
-  Blog.find({ title: title, author: author })
-    .then((blog) => {
-      console.log(blog);
-      if (blog.length > 0) {
-        response.status(400).json({
-          error: 'This blog already exists',
-        });
-      } else {
-        blogObj
-          .save()
-          .then((savedBlog) => {
-            console.log('blog saved!');
-            response.status(201).json(savedBlog);
-          })
-          .catch((error) => next(error));
-      }
-    })
-    .catch((error) => next(error));
-});
+    Blog.find({ title: title, author: author })
+      .then((blog) => {
+        console.log(blog);
+        if (blog.length > 0) {
+          response.status(400).json({
+            error: 'This blog already exists',
+          });
+        } else {
+          blogObj
+            .save()
+            .then((savedBlog) => {
+              console.log('blog saved!');
+              response.status(201).json(savedBlog);
+            })
+            .catch((error) => next(error));
+        }
+      })
+      .catch((error) => next(error));
+  });
+
+  // try {
+  //   const savedBlog = await blogObj.save();
+  //   response.status(201).json(savedBlog);
+  // }catch(exception) {
+  //   next(exception);
+  // }
+// });
 
 blogsRouter.delete('/:id', (request, response, next) => {
   Blog.findByIdAndRemove(request.params.id)

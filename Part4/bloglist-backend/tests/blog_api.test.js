@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
-const helper = require('./test_helper.test');
+const helper = require('../utils/test_helper');
 const app = require('../app');
 const api = supertest(app);
 
@@ -37,6 +37,16 @@ test('a specific blog is within the returned blogs', async () => {
   );
 });
 
+test('unique identifier property of the blog posts is named id', async () => {
+  await api
+    .get('/api/blogs');
+
+  const blogsAtEnd = await helper.blogsInDb();
+  const verifyId = blogsAtEnd.map(blog => blog.id);
+
+  expect(verifyId).toBeDefined();
+});
+
 test('a valid blog can be added', async () => {
   const newBlog = {
     title: 'This is a test',
@@ -53,13 +63,13 @@ test('a valid blog can be added', async () => {
 
   //   const response = await api.get('/api/blogs');
   const blogsAtEnd = await helper.blogsInDb();
-  expect(blogsAtEnd.body).toHaveLength(helper.initialBlogs.length + 1);
+  const titles = blogsAtEnd.map(blog => blog.title);
 
-  const authors = blogsAtEnd.body.map(blog => blog.author);
-  expect(authors).toContain('This is a test');
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+  expect(titles).toContain('This is a test');
 });
 
-test('blog without author will not be added', async () => {
+test('blog without title will not be added', async () => {
   const newBlog = {
     author: 'anh',
     url: 'https://abc',
@@ -72,7 +82,7 @@ test('blog without author will not be added', async () => {
     .expect(400);
 
   const blogsAtEnd = await helper.blogsInDb();
-  expect(blogsAtEnd.body).toHaveLength(helper.initialBlogs.length);
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 });
 
 test('blogs are returned as json', async () => {
@@ -87,13 +97,13 @@ afterAll(async () => {
 });
 
 // tests below are tested based on real time database set
-// test('there are two blogs', async () => {
-//   const response = await api.get('/api/blogs');
+test('there are two blogs', async () => {
+  const response = await api.get('/api/blogs');
 
-//   expect(response.body).toHaveLength(2);
-// });
+  expect(response.body).toHaveLength(6);
+});
 
-// test('the first blog is written by Muhammad Asad Iqbal Khan', async () => {
-//   const response = await api.get('/api/blogs');
-//   expect(response.body[0].author.trimStart()).toBe('Muhammad Asad Iqbal Khan');
-// });
+test('the first blog is written by Michael Chan', async () => {
+  const response = await api.get('/api/blogs');
+  expect(response.body[0].author.trimStart()).toBe('Michael Chan');
+});
