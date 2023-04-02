@@ -49,8 +49,8 @@ blogsRouter.post('/', async (request, response, next) => {
   });
 
   try {
-    if(!title && !author) {
-      response.status(400).json({ error: 'Title or author is missing!' });
+    if(!title && !url) {
+      response.status(400).json({ error: 'Title or url is missing!' });
     }else {
       const savedBlog = await blogObj.save();
       response.status(201).json(savedBlog);
