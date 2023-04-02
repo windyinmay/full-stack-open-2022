@@ -15,27 +15,31 @@ blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({});
   response.json(blogs);
 });
-
-blogsRouter.get('/:id', (request, response, next) => {
-  Blog.findById(request.params.id)
-    .then((blog) => {
-      if (blog) {
-        response.json(blog);
-      } else {
-        response.status(404).end();
-      }
-    })
-    .catch((error) => next(error));
+//get a blog by id
+blogsRouter.get('/:id', async (request, response, next) => {
+  const blogById = await Blog.findById(request.params.id);
+  try {
+    if(blogById) {
+      response.json(blogById);
+    } else {
+      response.status(404).end();
+    }
+  } catch (exception) {
+    next(exception);
+  }
+  // Blog.findById(request.params.id)
+  //   .then((blog) => {
+  //     if (blog) {
+  //       response.json(blog);
+  //     } else {
+  //       response.status(404).end();
+  //     }
+  //   })
+  //   .catch((error) => next(error));
 });
 
 blogsRouter.post('/', async (request, response, next) => {
   const { title, author, url, likes } = request.body;
-
-  if (!title) {
-    return response.status(400).json({
-      error: 'title is missing',
-    });
-  }
 
   const blogObj = new Blog({
     title,
@@ -43,33 +47,37 @@ blogsRouter.post('/', async (request, response, next) => {
     url,
     likes,
   });
-  //Recheck the find method below, it does not work yet
-    Blog.find({ title: title, author: author })
-      .then((blog) => {
-        console.log(blog);
-        if (blog.length > 0) {
-          response.status(400).json({
-            error: 'This blog already exists',
-          });
-        } else {
-          blogObj
-            .save()
-            .then((savedBlog) => {
-              console.log('blog saved!');
-              response.status(201).json(savedBlog);
-            })
-            .catch((error) => next(error));
-        }
-      })
-      .catch((error) => next(error));
-  });
 
-  // try {
-  //   const savedBlog = await blogObj.save();
-  //   response.status(201).json(savedBlog);
-  // }catch(exception) {
-  //   next(exception);
-  // }
+  try {
+    if(!title && !author) {
+      response.status(400).json({ error: 'Title or author is missing!' });
+    }else {
+      const savedBlog = await blogObj.save();
+      response.status(201).json(savedBlog);
+    }
+  } catch(exception) {
+    next(exception);
+  }
+});
+//Recheck the find method below, it does not work yet
+//   Blog.find({ title: title, author: author })
+//     .then((blog) => {
+//       console.log(blog);
+//       if (blog.length > 0) {
+//         response.status(400).json({
+//           error: 'This blog already exists',
+//         });
+//       } else {
+//         blogObj
+//           .save()
+//           .then((savedBlog) => {
+//             console.log('blog saved!');
+//             response.status(201).json(savedBlog);
+//           })
+//           .catch((error) => next(error));
+//       }
+//     })
+//     .catch((error) => next(error));
 // });
 
 blogsRouter.delete('/:id', (request, response, next) => {
