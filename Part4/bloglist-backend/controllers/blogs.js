@@ -19,16 +19,16 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.get('/:id', async (request, response, next) => {
   const blogById = await Blog.findById(request.params.id);
   // try {
-    if(blogById) {
-      response.json(blogById);
-    } else {
-      response.status(404).end();
-    }
+  if(blogById) {
+    response.json(blogById);
+  } else {
+    response.status(404).end();
+  }
   // } catch (exception) {
   //   next(exception);
-  // no need to use catch if an exception occurs in an async route, 
+  // no need to use catch if an exception occurs in an async route,
   //the execution is automatically passed to the error handling middleware.
-  }
+}
   // Blog.findById(request.params.id)
   //   .then((blog) => {
   //     if (blog) {
@@ -38,7 +38,7 @@ blogsRouter.get('/:id', async (request, response, next) => {
   //     }
   //   })
   //   .catch((error) => next(error));
-});
+);
 
 blogsRouter.post('/', async (request, response, next) => {
   const { title, author, url, likes } = request.body;
@@ -63,11 +63,11 @@ blogsRouter.post('/', async (request, response, next) => {
 });
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id);
+  await Blog.findByIdAndRemove(request.params._id);
   response.status(204).end();
 });
 
-blogsRouter.put('/:id', (request, response, next) => {
+blogsRouter.put('/:id', async (request, response) => {
   const { title, author, url, likes } = request.body;
 
   const blog = {
@@ -77,15 +77,14 @@ blogsRouter.put('/:id', (request, response, next) => {
     likes,
   };
 
-  Blog.findByIdAndUpdate(
+  const updatedBlog = await Blog.findByIdAndUpdate(
     request.params.id,
-    { blog },
+    blog,
     { new: true, runValidators: true, context: 'query' }
-  )
-    .then((updatedBlog) => {
-      response.json(updatedBlog);
-    })
-    .catch((error) => next(error));
+  );
+
+  response.json(updatedBlog);
+
 });
 
 module.exports = blogsRouter;
