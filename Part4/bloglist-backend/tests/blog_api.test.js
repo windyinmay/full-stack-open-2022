@@ -127,16 +127,18 @@ test('blog without title will not be added and returned 400', async () => {
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 });
 
+//not working yet at the moment, go back and check later
 test('deleting a single blog by id', async () => {
-  const blogToBeDeleted = await helper.blogsInDb()[0];
+  const blogToBeDeleted = await helper.blogsInDb();
+  const idOfBlogDeleted = blogToBeDeleted[0].id;
 
   await api
-    .delete(`/api/blogs/${blogToBeDeleted.id}`)
+    .delete(`/api/blogs/${idOfBlogDeleted}`)
     .expect(204);
 
   const blogsAtEnd = await helper.blogsInDb();
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
 
-  const idAtEnd = blogsAtEnd.map(blog => blog.id);
-  expect(idAtEnd).not.toContain(blogToBeDeleted.id);
+  const idsAtEnd = blogsAtEnd.map(blog => blog.id);
+  expect(idsAtEnd).not.toContain(idOfBlogDeleted);
 });
