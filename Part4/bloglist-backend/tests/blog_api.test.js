@@ -3,6 +3,7 @@ const supertest = require('supertest');
 const helper = require('../utils/test_helper');
 const app = require('../app');
 const api = supertest(app);
+const { debug } = require('jest');
 
 const Blog = require('../models/blog');
 
@@ -141,4 +142,26 @@ test('deleting a single blog by id', async () => {
 
   const idsAtEnd = blogsAtEnd.map(blog => blog.id);
   expect(idsAtEnd).not.toContain(idOfBlogDeleted);
+  debug(`Value of idOfBlogDeleted: ${idOfBlogDeleted}`);
+});
+
+test('updating the information of an individual blog post', async () => {
+  const newBlog = {
+    title: 'test the update function',
+    author: 'me',
+    url: 'https://something something',
+    likes: 12
+  };
+
+  const blogToBeUpdated = await helper.blogsInDb();
+  const idOfBlogToBeUpdated = blogToBeUpdated[0].id;
+  await api
+    .put(`/api/blogs/${idOfBlogToBeUpdated}`)
+    .send(newBlog);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  // const updatedBlog = blogsAtEnd[0];
+
+  const newLikes = blogsAtEnd.map(blog => blog.likes);
+  expect(newLikes).toContain(12);
 });
