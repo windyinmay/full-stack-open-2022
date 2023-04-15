@@ -1,3 +1,5 @@
+import { isNotGreaterThanZero } from './utils/helper';
+
 interface BMIValues {
 	height: number;
 	weight: number;
@@ -7,13 +9,19 @@ const parseArguments = (args: string[]): BMIValues => {
 	if (args.length < 4) throw new Error('Not enough arguments');
 	if (args.length > 4) throw new Error('Too many arguments');
 
-	if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+	if (
+		!isNaN(Number(args[2])) &&
+		!(Number(args[2]) <= 0) &&
+		!isNaN(Number(args[3]))
+	) {
 		return {
 			height: Number(args[2]),
 			weight: Number(args[3]),
 		};
 	} else {
-		throw new Error('Provided values were not numbers!');
+		throw new Error(
+			'Provided values were not numbers or height is not greater than 0!'
+		);
 	}
 };
 //export to solve the parseArguments is defined the same variable in many files at a "block-scope"

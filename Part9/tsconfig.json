@@ -1,5 +1,19 @@
 {
 	"compilerOptions": {
-		"noImplicitAny": true
+		"noImplicitAny": true,
+		"target": "ES2022",
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		"strictBindCallApply": true,
+		"noImplicitThis": true,
+		"alwaysStrict": true,
+		"declaration": true
 	}
 }

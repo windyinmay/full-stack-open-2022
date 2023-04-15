@@ -34,17 +34,22 @@ export const exerciseCalculator = (
 	dailyHours: Array<number>,
 	target: number
 ) => {
+	if (dailyHours.length <= 0)
+		throw new Error('Cannot compare, need to have at least one day');
+	if (target <= 0)
+		throw new Error('Target hour needs to be equal or more than 1 hour');
+
 	const trainingDays = dailyHours.filter((hPerDay) => hPerDay !== 0);
 	const averageHours =
 		dailyHours.reduce((prev, curr) => prev + curr) / dailyHours.length;
 	let rating: number;
 	let ratingDescription: string;
 
-	if ((averageHours / target) * 100 < 60) {
+	if ((averageHours / target) * 100 < 65) {
 		rating = 1;
 		ratingDescription = 'need to contribute more time';
 	} else if (
-		(averageHours / target) * 100 >= 60 &&
+		(averageHours / target) * 100 >= 65 &&
 		(averageHours / target) * 100 < 97
 	) {
 		rating = 2;
