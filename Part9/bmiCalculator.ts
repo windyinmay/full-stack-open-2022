@@ -1,4 +1,4 @@
-import { isNotGreaterThanZero } from './utils/helper';
+// import { isNotGreaterThanZero } from './utils/helper';
 
 interface BMIValues {
 	height: number;
@@ -36,8 +36,8 @@ export const calculateBmi = (h: number, w: number) => {
 	} else if (bmi >= 25 && bmi <= 29.9) {
 		printText = 'Overweight';
 	} else printText = 'Obesity';
-	// return printText;
-	console.log(printText);
+	return printText;
+	// console.log(printText);
 };
 
 try {
