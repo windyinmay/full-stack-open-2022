@@ -2,6 +2,7 @@
 //If import does not work, try a combined method: import ... = require('...')
 import express from 'express';
 import { calculateBmi } from './bmiCalculator';
+import { exerciseCalculator } from './exerciseCalculator';
 const app = express();
 
 app.get('/hello', (_req, res) => {
@@ -21,8 +22,16 @@ app.get('/bmi', (_req, res) => {
 		bmi: calculateBmi(Number(height), Number(weight)),
 	});
 });
+app.post('/calculate', (req, res) => {
+	const { dailyHours, target } = req.body;
 
-const PORT = 3003;
+	let value3: any = 1;
+
+	const result = exerciseCalculator(dailyHours, target);
+	res.send({ result });
+});
+
+const PORT = 3002;
 
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
