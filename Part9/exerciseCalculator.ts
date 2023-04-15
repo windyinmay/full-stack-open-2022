@@ -1,3 +1,8 @@
+interface InputValues {
+	inputTarget: number;
+	inputDailyHours: Array<number>;
+}
+
 interface Result {
 	periodLength: number;
 	trainingDays: number;
@@ -8,7 +13,27 @@ interface Result {
 	average: number;
 }
 
-const exerciseCalculator = (dailyHours: number[], target: number): Result => {
+const parseArguments = (args: Array<string>): InputValues => {
+	if (args.length < 4) throw new Error('Not enough arguments');
+	// if (args.length > 4) throw new Error('Too many arguments');
+	// if (!isNaN(Number(args[2])) && !args[3].some((a) => isNaN(Number(a))))
+	if (
+		!isNaN(Number(args[2])) &&
+		!args.slice(3).some((arg) => isNaN(Number(arg)))
+	) {
+		return {
+			inputTarget: Number(args[2]),
+			inputDailyHours: args.slice(3).map((arg) => Number(arg)),
+		};
+	} else {
+		throw new Error('Provided values were not numbers!');
+	}
+};
+//export to solve the parseArguments is defined the same variable in many files at a "block-scope"
+export const exerciseCalculator = (
+	dailyHours: Array<number>,
+	target: number
+) => {
 	const trainingDays = dailyHours.filter((hPerDay) => hPerDay !== 0);
 	const averageHours =
 		dailyHours.reduce((prev, curr) => prev + curr) / dailyHours.length;
@@ -28,15 +53,28 @@ const exerciseCalculator = (dailyHours: number[], target: number): Result => {
 		rating = 3;
 		ratingDescription = 'good track records, keep improving';
 	}
-
-	return {
-		periodLength: dailyHours.length,
-		trainingDays: trainingDays.length,
-		success: averageHours > target,
-		rating: rating,
-		ratingDescription: ratingDescription,
-		target: target,
-		average: averageHours,
-	};
+	let result: Result;
+	console.log(
+		(result = {
+			periodLength: dailyHours.length,
+			trainingDays: trainingDays.length,
+			success: averageHours > target,
+			rating: rating,
+			ratingDescription: ratingDescription,
+			target: target,
+			average: averageHours,
+		})
+	);
 };
-console.log(exerciseCalculator([3, 0, 2, 4.5, 0, 3, 1], 2));
+// console.log(exerciseCalculator([3, 0, 2, 4.5, 0, 3, 1], 2));
+
+try {
+	const { inputTarget, inputDailyHours } = parseArguments(process.argv);
+	exerciseCalculator(inputDailyHours, inputTarget);
+} catch (error: unknown) {
+	let errorMessage = 'Something bad happened.';
+	if (error instanceof Error) {
+		errorMessage += ' Error: ' + error.message;
+	}
+	console.log(errorMessage);
+}
