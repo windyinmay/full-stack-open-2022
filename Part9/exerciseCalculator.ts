@@ -33,7 +33,7 @@ const parseArguments = (args: Array<string>): InputValues => {
 export const exerciseCalculator = (
 	dailyHours: Array<number>,
 	target: number
-) => {
+): Result => {
 	if (dailyHours.length <= 0)
 		throw new Error('Cannot compare, need to have at least one day');
 	if (target <= 0)
@@ -58,18 +58,16 @@ export const exerciseCalculator = (
 		rating = 3;
 		ratingDescription = 'good track records, keep improving';
 	}
-	let result: Result;
-	console.log(
-		(result = {
-			periodLength: dailyHours.length,
-			trainingDays: trainingDays.length,
-			success: averageHours > target,
-			rating: rating,
-			ratingDescription: ratingDescription,
-			target: target,
-			average: averageHours,
-		})
-	);
+	// let result: Result;
+	return {
+		periodLength: dailyHours.length,
+		trainingDays: trainingDays.length,
+		success: averageHours > target,
+		rating: rating,
+		ratingDescription: ratingDescription,
+		target: target,
+		average: averageHours,
+	};
 };
 // console.log(exerciseCalculator([3, 0, 2, 4.5, 0, 3, 1], 2));
 
