@@ -8,3 +8,6 @@ const multiplicator = (a: number, b: number, printText: string) => {
 // 	4,
 // 	'Multiplied a string and 4, the result is:'
 // );
+const a: number = Number(process.argv[2]);
+const b: number = Number(process.argv[3]);
+multiplicator(a, b, `Multiplied ${a} and ${b}, the result is:`);
