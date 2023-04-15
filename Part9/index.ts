@@ -12,7 +12,12 @@ app.get('/hello', (_req, res) => {
 app.get('/bmi', (_req, res) => {
 	const { height, weight } = _req.query;
 
-	if (!Number(height) || !Number(weight)) {
+	if (
+		!Number(height) ||
+		!Number(weight) ||
+		isNaN(Number(height)) ||
+		isNaN(Number(weight))
+	) {
 		res.status(400).json({ error: 'malformatted parameters' });
 	}
 
@@ -24,8 +29,6 @@ app.get('/bmi', (_req, res) => {
 });
 app.post('/calculate', (req, res) => {
 	const { dailyHours, target } = req.body;
-
-	let value3: any = 1;
 
 	const result = exerciseCalculator(dailyHours, target);
 	res.send({ result });
