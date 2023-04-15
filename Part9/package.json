@@ -7,7 +7,7 @@
 		"ts-node": "ts-node",
 		"bmiCalculator": "ts-node bmiCalculator.ts",
 		"multiply": "ts-node multiplier.ts",
-		"calculate": "ts-node calculator.tsx"
+		"exerciseCalculator": "ts-node exerciseCalculator.ts"
 	},
 	"author": "ANH",
 	"license": "MIT",
