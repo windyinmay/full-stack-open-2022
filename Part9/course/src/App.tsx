@@ -35,7 +35,17 @@ interface CoursePartBackground extends CoursePartBase {
 	kind: 'background';
 }
 
-type CoursePart = CoursePartBasic | CoursePartGroup | CoursePartBackground;
+interface CoursePartSpecial extends CoursePartBase {
+	description: string;
+	requirements: Array<string>;
+	kind: 'special';
+}
+
+export type CoursePart =
+	| CoursePartBasic
+	| CoursePartGroup
+	| CoursePartBackground
+	| CoursePartSpecial;
 
 const App = () => {
 	const courseName = 'Half Stack application development';
@@ -66,7 +76,15 @@ const App = () => {
 				'https://type-level-typescript.com/template-literal-types',
 			kind: 'background',
 		},
+		{
+			name: 'Backend development',
+			exerciseCount: 21,
+			description: 'Typing the backend',
+			requirements: ['nodejs', 'jest'],
+			kind: 'special',
+		},
 	];
+
 	return (
 		<div>
 			<Header name={courseName} />
