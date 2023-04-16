@@ -44,7 +44,7 @@ const isGender = (param: string): param is Gender => {
 
 const parseName = (name: unknown): string => {
 	if (!name || !isString(name)) {
-		throw new Error('Incorrect or missing name');
+		throw new Error('Incorrect or missing name' + name);
 	}
 	return name;
 };
@@ -58,7 +58,7 @@ const parseDateOfBirth = (dateOfBirth: unknown): string => {
 
 const parseSsn = (ssn: unknown): string => {
 	if (!ssn || !isString(ssn)) {
-		throw new Error('Incorrect or missing ssn');
+		throw new Error('Incorrect or missing ssn' + ssn);
 	}
 	return ssn;
 };
@@ -72,7 +72,7 @@ const parseGender = (gender: unknown): Gender => {
 
 const parseOccupation = (occupation: unknown): string => {
 	if (!occupation || !isString(occupation)) {
-		throw new Error('Incorrect or missing name');
+		throw new Error('Incorrect or missing name' + occupation);
 	}
 	return occupation;
 };
