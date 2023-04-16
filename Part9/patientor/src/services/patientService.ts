@@ -9,11 +9,11 @@ const getPatients = (): PatientEntry[] => {
 };
 
 const getNonSensitivePatients = (): NonSensitivePatientEntry[] => {
-	return patients.map(({ id, name, dateOfBirth, ssn, occupation }) => ({
+	return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
 		id,
 		name,
 		dateOfBirth,
-		ssn,
+		gender,
 		occupation,
 	}));
 };
