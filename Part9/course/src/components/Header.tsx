@@ -1,5 +1,7 @@
-const Header = ({ name }: { name: string }) => {
-	return <h1>{name}</h1>;
+import { HeaderProps } from '../App';
+
+const Header = (props: HeaderProps) => {
+	return <h1>{props.name}</h1>;
 };
 
 export default Header;
