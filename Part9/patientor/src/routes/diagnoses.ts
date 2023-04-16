@@ -1,14 +1,14 @@
 import express from 'express';
-import patientService from '../services/patientService';
+import diagnoseService from '../services/diagnoseService';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-	res.send(patientService.getNonSensitivePatients());
+	res.send(diagnoseService.getDiagnoses);
 });
 
 router.post('/', (_req, res) => {
-	res.send('Saving a patient!');
+	res.send('Saving a diagnose!');
 });
 
 export default router;
