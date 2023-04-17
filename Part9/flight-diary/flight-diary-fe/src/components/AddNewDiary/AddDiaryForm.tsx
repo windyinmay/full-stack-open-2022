@@ -81,13 +81,31 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 	return (
 		<div>
 			<form onSubmit={addDiary}>
+				<InputLabel style={{ marginTop: 20 }}>Date</InputLabel>
 				<TextField
-					label='Date'
+					type='date'
 					fullWidth
 					value={date}
 					onChange={({ target }) => setDate(target.value)}
 				/>
-				<InputLabel style={{ marginTop: 20 }}>Visibility</InputLabel>
+				<fieldset>
+					<legend>Select a visibility:</legend>
+					{VisibilityOptions.map((option) => (
+						<div key={option.label}>
+							<input
+								type='radio'
+								id={option.label}
+								name='drone'
+								value={option.value}
+								checked
+								onChange={onVisibilityChange}
+							/>
+							<label>{option.label}</label>
+						</div>
+					))}
+				</fieldset>
+
+				{/* <InputLabel style={{ marginTop: 20 }}>Visibility</InputLabel>
 				<Select
 					label='Visibility'
 					fullWidth
@@ -99,7 +117,8 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 							{option.label}
 						</MenuItem>
 					))}
-				</Select>
+				</Select> */}
+
 				<InputLabel style={{ marginTop: 20 }}>Weather</InputLabel>
 				<Select
 					label='Weather'
@@ -113,6 +132,7 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 						</MenuItem>
 					))}
 				</Select>
+				<InputLabel style={{ marginTop: 20 }}>Comment</InputLabel>
 				<TextField
 					label='Comment'
 					fullWidth
