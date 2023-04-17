@@ -1,9 +1,12 @@
-import { ContentProps } from '../App';
+import { CoursePart } from '../App';
+import Part from './Part';
 
-const Content = (props: ContentProps) => {
+const Content = ({ courseParts }: { courseParts: CoursePart[] }) => {
 	return (
 		<p>
-			{props.name} {props.exerciseCount}
+			{courseParts.map((coursePart: CoursePart) => (
+				<Part key={coursePart.name} coursePart={coursePart} />
+			))}
 		</p>
 	);
 };

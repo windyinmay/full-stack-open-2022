@@ -1,7 +1,5 @@
-import { HeaderProps } from '../App';
-
-const Header = (props: HeaderProps) => {
-	return <h1>{props.name}</h1>;
+const Header = ({ name }: { name: string }): JSX.Element => {
+	return <h1>{name}</h1>;
 };
 
 export default Header;
