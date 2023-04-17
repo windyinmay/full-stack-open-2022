@@ -8,6 +8,9 @@ import {
 	Grid,
 	Button,
 	SelectChangeEvent,
+	RadioGroup,
+	FormControlLabel,
+	Radio,
 } from '@mui/material';
 
 import { DiaryFormValues, Weather, Visibility } from '../../types';
@@ -41,7 +44,6 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 	const [visibility, setVisibility] = useState(Visibility.Ok);
 	const [weather, setWeather] = useState(Weather.Sunny);
 	const [comment, setComment] = useState('');
-	const [checked, setChecked] = useState(false);
 
 	const onVisibilityChange = (event: SelectChangeEvent<string>) => {
 		event.preventDefault();
@@ -89,23 +91,26 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 					value={date}
 					onChange={({ target }) => setDate(target.value)}
 				/>
-				<fieldset>
-					<legend>Select a visibility:</legend>
-					{VisibilityOptions.map((option) => (
-						<div key={option.label}>
-							<input
-								type='radio'
-								id={option.label}
-								value={option.value}
-								checked={checked}
-								onChange={onVisibilityChange}
-							/>
-							<label>{option.label}</label>
-						</div>
-					))}
-				</fieldset>
 
 				<InputLabel style={{ marginTop: 20 }}>Visibility</InputLabel>
+				<RadioGroup
+					row
+					aria-labelledby='Select a visibility'
+					defaultValue={Visibility.Ok}
+					value={visibility}
+					onChange={onVisibilityChange}
+				>
+					{VisibilityOptions.map((option) => (
+						<FormControlLabel
+							key={option.label}
+							value={option.value}
+							control={<Radio />}
+							label={option.label}
+						/>
+					))}
+				</RadioGroup>
+
+				{/* <InputLabel style={{ marginTop: 20 }}>Visibility</InputLabel>
 				<Select
 					label='Visibility'
 					fullWidth
@@ -117,10 +122,26 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 							{option.label}
 						</MenuItem>
 					))}
-				</Select>
+				</Select> */}
 
 				<InputLabel style={{ marginTop: 20 }}>Weather</InputLabel>
-				<Select
+				<RadioGroup
+					row
+					aria-labelledby='Select a weather'
+					defaultValue={Weather.Sunny}
+					value={weather}
+					onChange={onWeatherChange}
+				>
+					{WeatherOptions.map((option) => (
+						<FormControlLabel
+							key={option.label}
+							value={option.value}
+							control={<Radio />}
+							label={option.label}
+						/>
+					))}
+				</RadioGroup>
+				{/*<Select
 					label='Weather'
 					fullWidth
 					value={weather}
@@ -131,7 +152,7 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 							{option.label}
 						</MenuItem>
 					))}
-				</Select>
+				</Select> */}
 				<InputLabel style={{ marginTop: 20 }}>Comment</InputLabel>
 				<TextField
 					label='Comment'
