@@ -14,10 +14,12 @@ export enum Visibility {
 }
 export interface DiaryEntry {
 	id: number;
-	date: string;
+	date?: string;
 	weather: Weather;
 	visibility: Visibility;
 	comment?: string;
 }
 
 export type NonSensitiveDiaryEntry = Omit<DiaryEntry, 'comment'>;
+
+export type DiaryFormValues = Omit<DiaryEntry, 'id' | 'entries'>;

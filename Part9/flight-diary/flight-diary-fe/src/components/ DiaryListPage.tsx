@@ -1,6 +1,7 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import {
 	Box,
+	Button,
 	Table,
 	TableHead,
 	Typography,
@@ -8,8 +9,10 @@ import {
 	TableRow,
 	TableBody,
 } from '@mui/material';
-// import axios from 'axios';
-import { DiaryEntry } from '../types';
+import axios from 'axios';
+import { DiaryEntry, DiaryFormValues } from '../types';
+import AddNewDiary from './AddNewDiary';
+import diaryService from '../services/diaries';
 
 interface Props {
 	diaries: DiaryEntry[];
@@ -17,6 +20,39 @@ interface Props {
 }
 
 const DiaryListPage = ({ diaries, setDiaries }: Props) => {
+	const [modalOpen, setModalOpen] = useState<boolean>(false);
+	const [error, setError] = useState<string>();
+
+	const openModal = (): void => setModalOpen(true);
+
+	const closeModal = (): void => {
+		setModalOpen(false);
+		setError(undefined);
+	};
+
+	const submitNewDiary = async (values: DiaryFormValues) => {
+		try {
+			const diary = await diaryService.create(values);
+			setDiaries(diaries.concat(diary));
+			setModalOpen(false);
+		} catch (e: unknown) {
+			if (axios.isAxiosError(e)) {
+				if (e?.response?.data && typeof e?.response?.data === 'string') {
+					const message = e.response.data.replace(
+						'Something went wrong. Error: ',
+						''
+					);
+					console.error(message);
+					setError(message);
+				} else {
+					setError('Unrecognized axios error');
+				}
+			} else {
+				console.error('Unknown error', e);
+				setError('Unknown error');
+			}
+		}
+	};
 	return (
 		<div className='App'>
 			<Box>
@@ -44,6 +80,16 @@ const DiaryListPage = ({ diaries, setDiaries }: Props) => {
 					))}
 				</TableBody>
 			</Table>
+
+			<AddNewDiary
+				modalOpen={modalOpen}
+				onSubmit={submitNewDiary}
+				error={error}
+				onClose={closeModal}
+			/>
+			<Button variant='contained' onClick={() => openModal()}>
+				Add New Diary Entry
+			</Button>
 		</div>
 	);
 };
