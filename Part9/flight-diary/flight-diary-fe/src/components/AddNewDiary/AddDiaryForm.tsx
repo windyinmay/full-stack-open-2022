@@ -41,6 +41,7 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 	const [visibility, setVisibility] = useState(Visibility.Ok);
 	const [weather, setWeather] = useState(Weather.Sunny);
 	const [comment, setComment] = useState('');
+	const [checked, setChecked] = useState(false);
 
 	const onVisibilityChange = (event: SelectChangeEvent<string>) => {
 		event.preventDefault();
@@ -95,9 +96,8 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 							<input
 								type='radio'
 								id={option.label}
-								name='drone'
 								value={option.value}
-								checked
+								checked={checked}
 								onChange={onVisibilityChange}
 							/>
 							<label>{option.label}</label>
@@ -105,7 +105,7 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 					))}
 				</fieldset>
 
-				{/* <InputLabel style={{ marginTop: 20 }}>Visibility</InputLabel>
+				<InputLabel style={{ marginTop: 20 }}>Visibility</InputLabel>
 				<Select
 					label='Visibility'
 					fullWidth
@@ -117,7 +117,7 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 							{option.label}
 						</MenuItem>
 					))}
-				</Select> */}
+				</Select>
 
 				<InputLabel style={{ marginTop: 20 }}>Weather</InputLabel>
 				<Select
