@@ -6,6 +6,7 @@ import {
 	Link,
 	Routes,
 	useParams,
+	Outlet,
 } from 'react-router-dom';
 import { Button, Divider, Container, Typography } from '@mui/material';
 
@@ -70,3 +71,22 @@ const App = () => {
 };
 
 export default App;
+
+// export const Layout = () => {
+// 	return (
+// 		<>
+// 			<nav>
+// 				<ul>
+// 					<li>
+// 						<Link to='/'>Home</Link>
+// 					</li>
+// 					<li>
+// 						<Link to='/patients'>Patient List</Link>
+// 					</li>
+// 				</ul>
+// 			</nav>
+
+// 			<Outlet />
+// 		</>
+// 	);
+// };
