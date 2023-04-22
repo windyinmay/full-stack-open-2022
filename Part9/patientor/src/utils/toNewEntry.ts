@@ -1,4 +1,4 @@
-import { EntryType, NewEntry } from '../types';
+import { DiagnoseEntry, EntryType, NewEntry } from '../types';
 import { isDate, isString } from './toNewPatientEntry';
 
 export type Fields = {
@@ -6,6 +6,7 @@ export type Fields = {
 	specialist: unknown;
 	type: unknown;
 	description: unknown;
+	diagnosisCodes: unknown;
 };
 
 const toNewEntry = ({
@@ -13,6 +14,7 @@ const toNewEntry = ({
 	specialist,
 	type,
 	description,
+	diagnosisCodes,
 	...entry
 }: Fields): NewEntry => {
 	const newEntry: NewEntry = {
@@ -20,6 +22,7 @@ const toNewEntry = ({
 		specialist: parseSpecialist(specialist),
 		type: parseType(type),
 		description: parseDescription(description),
+		diagnosisCodes: parseDiagnosisCodes(diagnosisCodes),
 		...entry,
 	};
 	return newEntry;
@@ -58,5 +61,12 @@ const parseDescription = (desc: unknown): string => {
 	}
 	return desc;
 };
+const parseDiagnosisCodes = (object: unknown): Array<DiagnoseEntry['code']> => {
+	if (!object || typeof object !== 'object' || !('diagnosisCodes' in object)) {
+		// we will just trust the data to be in correct form
+		return [] as Array<DiagnoseEntry['code']>;
+	}
 
+	return object.diagnosisCodes as Array<DiagnoseEntry['code']>;
+};
 export default toNewEntry;
