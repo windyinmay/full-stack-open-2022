@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Diagnosis, Entry, Patient } from '../types';
+import { Entry, Patient } from '../types';
 
 import patientService from '../services/patients';
 

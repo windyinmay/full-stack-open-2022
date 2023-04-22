@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Diagnosis, Entry } from '../types';
-import HealthCheckEntry from './HealthCheckEntry';
-import HospitalEntry from './HealthCheckEntry';
-import OccupationalEntry from './OccupationalEntry';
+import HealthCheck from './HealthCheck';
+import Hospital from './Hospital';
+import Occupational from './Occupational';
 
 import diagnoseService from '../services/diagnosis';
 
@@ -12,7 +12,7 @@ const assertNever = (value: never): never => {
 	);
 };
 
-const Entries = ({ entry }: { entry: Entry }) => {
+const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
 	const [diagnosis, setDiagnosis] = useState<Diagnosis[]>([]);
 	if (!diagnosis) {
 		const fetchDiagnoseList = async () => {
@@ -43,13 +43,13 @@ const Entries = ({ entry }: { entry: Entry }) => {
 	try {
 		switch (entry.type) {
 			case 'Hospital':
-				return <HospitalEntry entry={entry} />;
+				return <Hospital entry={entry} />;
 
 			case 'HealthCheck':
-				return <HealthCheckEntry entry={entry} />;
+				return <HealthCheck entry={entry} />;
 
 			case 'OccupationalHealthcare':
-				return <OccupationalEntry entry={entry} />;
+				return <Occupational entry={entry} />;
 
 			default:
 				return assertNever(entry);
@@ -60,4 +60,4 @@ const Entries = ({ entry }: { entry: Entry }) => {
 	}
 };
 
-export default Entries;
+export default EntryDetails;
