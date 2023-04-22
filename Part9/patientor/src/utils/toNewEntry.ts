@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { DiagnoseEntry, EntryType, NewEntry } from '../types';
 import { isDate, isString } from './toNewPatientEntry';
 
@@ -44,7 +45,6 @@ const parseSpecialist = (specialist: unknown): string => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isType = (param: any): param is EntryType => {
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 	return Object.values(EntryType).includes(param);
 };
 
