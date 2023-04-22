@@ -14,11 +14,11 @@ export enum HealthCheckRating {
 	'CriticalRisk' = 3,
 }
 
-// export enum EntryType {
-// 	HealthCheck = 'HealthCheck',
-// 	OccupationalHealthcare = 'OccupationalHealthcare',
-// 	Hospital = 'Hospital',
-// }
+export enum EntryType {
+	HealthCheck = 'HealthCheck',
+	OccupationalHealthcare = 'OccupationalHealthcare',
+	Hospital = 'Hospital',
+}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 
@@ -75,11 +75,11 @@ export interface SickLeave {
 
 export interface HealthCheckEntry extends BaseEntry {
 	type: 'HealthCheck';
-	healthCheckRating: HealthCheckRating;
+	healthCheckRating?: HealthCheckRating;
 }
 
 export type NonSensitivePatientEntry = Omit<PatientEntry, 'ssn' | 'entries'>;
-
+export type PublicPatient = Omit<PatientEntry, 'ssn' | 'entries'>;
 export type NewPatientEntry = Omit<PatientEntry, 'id'>;
 
 // Define special omit for unions

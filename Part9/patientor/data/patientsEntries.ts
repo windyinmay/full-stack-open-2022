@@ -112,11 +112,21 @@ const patientEntries: PatientEntry[] = [
 		],
 	},
 ];
-
+//study material is somehow stupid since now cant add new patient??
 // const patientEntries: PatientEntry[] = data.map((obj) => {
 // 	const object = toNewPatientEntry(obj) as PatientEntry;
 // 	object.id = obj.id;
 // 	return object;
+// });
+
+// const patientEntries: PatientEntry[] = data.flatMap((obj) => {
+// 	const object = toNewPatientEntry(obj as PatientEntry);
+// 	return [
+// 		{
+// 			...object,
+// 			id: obj.id,
+// 		},
+// 	];
 // });
 
 export default patientEntries;
