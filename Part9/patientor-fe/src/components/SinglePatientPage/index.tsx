@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Patient, Gender } from '../../types';
-import { apiBaseUrl } from '../../constants';
-import axios from 'axios';
+import { Entry, Patient } from '../../types';
 
 import patientService from '../../services/patients';
 
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
+
+import Entries from '../Entries';
 
 interface Props {
 	singlePatient: Patient | null;
@@ -34,13 +34,13 @@ const SinglePatientPage = ({ singlePatient, setSinglePatient }: Props) => {
 		switch (singlePatient.gender) {
 			case 'male':
 				return <MaleIcon />;
-				break;
+			//break is unreachable code this case
+			// break;
 			case 'female':
 				return <FemaleIcon />;
-				break;
+			// break;
 			case 'other':
 				return <TransgenderIcon />;
-				break;
 			default:
 				return null;
 		}
@@ -48,13 +48,22 @@ const SinglePatientPage = ({ singlePatient, setSinglePatient }: Props) => {
 
 	return (
 		<div>
-			<h2>
-				<b>{singlePatient.name}</b> <GenderIcon />
-			</h2>
-			<br />
+			<div>
+				<h2>
+					<b>{singlePatient.name}</b> <GenderIcon />
+				</h2>
 
-			<p>ssn: {singlePatient.ssn}</p>
-			<p>ocupation: {singlePatient.occupation}</p>
+				<p>ssn: {singlePatient.ssn}</p>
+				<p>ocupation: {singlePatient.occupation}</p>
+			</div>
+
+			<div>
+				<h2>Entries</h2>
+
+				{singlePatient.entries.map((entry: Entry) => (
+					<Entries key={entry.id} entry={entry} />
+				))}
+			</div>
 		</div>
 	);
 };
