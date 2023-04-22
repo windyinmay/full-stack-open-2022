@@ -1,0 +1,17 @@
+# GET http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries HTTP/1.1 content-type: application/json
+
+{
+    "date" : "2015-01-02",
+    "specialist": "abc",
+    "type": "Hospital",
+    "description": "test the post method",
+    "discharge": {
+        "date": "2015-01-16",
+        "criteria": "Thumb has healed."
+    },
+    "diagnosisCodes": [
+        "S62.5"
+    ],
+}

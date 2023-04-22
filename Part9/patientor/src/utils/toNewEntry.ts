@@ -25,11 +25,6 @@ const toNewEntry = ({
 	return newEntry;
 };
 
-// const isType = (param: any): param is EntryType => {
-// 	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-// 	return Object.values(EntryType).includes(param);
-// };
-
 export const parseDate = (date: unknown): string => {
 	if (!date || !isString(date) || !isDate(date)) {
 		throw new Error('Incorrect or missing date' + date);
