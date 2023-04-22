@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { HospitalEntry } from '../types';
-import { Favorite } from '@mui/icons-material';
+
 import BloodtypeIcon from '@mui/icons-material/Bloodtype';
 
 const Hospital = ({ entry }: { entry: HospitalEntry }) => {
