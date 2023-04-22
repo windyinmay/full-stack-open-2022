@@ -1,9 +1,11 @@
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 const User = require('../models/user');
 const helper = require('../utils/test_helper');
+const supertest = require('supertest');
 const app = require('../app');
 const api = supertest(app);
-const supertest = require('supertest');
+
 
 //...
 
@@ -58,5 +60,71 @@ describe('when there is initially one user in db', () => {
 
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd).toEqual(usersAtStart);
+  });
+});
+
+describe('addtion or creation fails because of not meeting requirements', () => {
+  test('creation fails if password is less than 3 characters', async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: 'windyinmay',
+      name: 'admin',
+      password: 'he'
+    };
+
+    const result = await api
+      .post('api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+
+    expect((result.body.error).toContain('password must be at least 3 characters long'));
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+  });
+
+  test('creation fails if username is missing', async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: '',
+      name: 'admin',
+      password: 'he'
+    };
+
+    const result = await api
+      .post('api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+
+    expect((result.body.error).toContain('`username` is required'));
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+  });
+
+  test('creation fails if password is missing', async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: 'windyinmay',
+      name: 'admin',
+      password: ''
+    };
+
+    const result = await api
+      .post('api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+
+    expect((result.body.error).toContain('password must be at least 3 characters long'));
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
   });
 });
