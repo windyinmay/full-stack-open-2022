@@ -33,11 +33,11 @@ export interface Patient {
 	entries: Entry[];
 }
 
-export interface DiagnoseEntry {
-	code: string;
-	name: string;
-	latin?: string;
-}
+// export interface DiagnoseEntry {
+// 	code: string;
+// 	name: string;
+// 	latin?: string;
+// }
 export type Entry =
 	| OccupationalHealthcareEntry
 	| HospitalEntry
@@ -47,7 +47,7 @@ export interface BaseEntry {
 	id: string;
 	date?: string;
 	specialist: string;
-	diagnosisCodes?: Array<DiagnoseEntry['code']>;
+	diagnosisCodes?: Array<Diagnosis['code']>;
 	description: string;
 	type: string;
 }

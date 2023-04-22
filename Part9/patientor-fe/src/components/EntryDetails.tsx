@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Entry } from '../../types';
+import { Diagnosis, Entry } from '../types';
 import HealthCheckEntry from './HealthCheckEntry';
 import HospitalEntry from './HealthCheckEntry';
 import OccupationalEntry from './OccupationalEntry';
+
+import diagnoseService from '../services/diagnosis';
 
 const assertNever = (value: never): never => {
 	throw new Error(
@@ -11,7 +13,32 @@ const assertNever = (value: never): never => {
 };
 
 const Entries = ({ entry }: { entry: Entry }) => {
-	// const [error, setError] = useState<string>();
+	const [diagnosis, setDiagnosis] = useState<Diagnosis[]>([]);
+	if (!diagnosis) {
+		const fetchDiagnoseList = async () => {
+			const diagnosis = await diagnoseService.getAll();
+			setDiagnosis(diagnosis);
+		};
+		void fetchDiagnoseList();
+	}
+
+	// const codes = entry.diagnosisCodes ?? [];
+
+	// return (
+	// 	<div>
+	// 		<p>
+	// 			{entry.date} {''} <i>{entry.description}</i>
+	// 		</p>
+	// 		<ul>
+	// 			{codes.map((code, index) => (
+	// 				<li key={code}>
+	// 					{code}
+	// 					{code} {diagnosis[code] ? diagnosis[code].name : null}
+	// 				</li>
+	// 			))}
+	// 		</ul>
+	// 	</div>
+	// );
 
 	try {
 		switch (entry.type) {

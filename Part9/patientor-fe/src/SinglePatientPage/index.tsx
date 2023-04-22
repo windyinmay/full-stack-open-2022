@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Entry, Patient } from '../../types';
+import { Diagnosis, Entry, Patient } from '../types';
 
-import patientService from '../../services/patients';
+import patientService from '../services/patients';
 
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 
-import Entries from '../Entries';
+import Entries from '../components/EntryDetails';
 
 interface Props {
 	singlePatient: Patient | null;
@@ -59,6 +59,7 @@ const SinglePatientPage = ({ singlePatient, setSinglePatient }: Props) => {
 
 			<div>
 				<h2>Entries</h2>
+				{/* <Entries singlePatient={singlePatient} /> */}
 
 				{singlePatient.entries.map((entry: Entry) => (
 					<Entries key={entry.id} entry={entry} />

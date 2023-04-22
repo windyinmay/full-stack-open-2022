@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
-import { Entry } from '../../types';
-const HealthCheckEntry = ({ entry }: { entry: Entry }) => {
+import { Entry } from '../types';
+const OccupationalEntry = ({ entry }: { entry: Entry }) => {
 	return (
 		<div>
 			<p>
@@ -15,4 +15,4 @@ const HealthCheckEntry = ({ entry }: { entry: Entry }) => {
 	);
 };
 
-export default HealthCheckEntry;
+export default OccupationalEntry;

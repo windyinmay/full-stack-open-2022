@@ -4,11 +4,12 @@ import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import { Button, Divider, Container, Typography } from '@mui/material';
 
 import { apiBaseUrl } from './constants';
-import { Patient } from './types';
 
 import patientService from './services/patients';
-import PatientListPage from './components/PatientListPage';
-import SinglePatientPage from './components/SinglePatientPage';
+
+import PatientListPage from './PatientListPage';
+import SinglePatientPage from './SinglePatientPage';
+import { Patient } from './types';
 
 const App = () => {
 	const [patients, setPatients] = useState<Patient[]>([]);

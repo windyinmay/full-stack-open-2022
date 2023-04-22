@@ -11,12 +11,12 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 
-import { PatientFormValues, Patient } from '../../types';
+import { PatientFormValues, Patient } from '../types';
 import AddPatientModal from '../AddPatientModal';
 
-import HealthRatingBar from '../HealthRatingBar';
+import HealthRatingBar from '../components/HealthRatingBar';
 
-import patientService from '../../services/patients';
+import patientService from '../services/patients';
 import { Link } from 'react-router-dom';
 
 interface Props {
