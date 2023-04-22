@@ -7,6 +7,7 @@ import {
 	PatientEntry,
 	NewPatientEntry,
 	Entry,
+	NewEntry,
 } from '../types';
 
 // const patients: PatientEntry[] = patientsEntries as PatientEntry[];
@@ -48,10 +49,22 @@ const getEntries = (id: string): Entry[] | undefined => {
 	return patientEntries?.entries;
 };
 
+const addEntry = (id: string, entry: NewEntry): Entry => {
+	const newEntry = {
+		id: uuidv4(),
+		...entry,
+	};
+
+	const patient = patients.find((p: PatientEntry) => p.id === id);
+	patient?.entries.push(newEntry as Entry);
+	return newEntry as Entry;
+};
+
 export default {
 	getPatients,
 	addPatient,
 	getNonSensitivePatients,
 	findById,
 	getEntries,
+	addEntry,
 };

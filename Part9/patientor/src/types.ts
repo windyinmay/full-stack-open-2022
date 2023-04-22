@@ -64,7 +64,7 @@ export interface Discharge {
 //where it will receive a specific component
 export interface OccupationalHealthcareEntry extends BaseEntry {
 	type: 'OccupationalHealthcare';
-	employerName: string;
+	employerName?: string;
 	sickLeave?: SickLeave;
 }
 
@@ -83,8 +83,8 @@ export type PublicPatient = Omit<PatientEntry, 'ssn' | 'entries'>;
 export type NewPatientEntry = Omit<PatientEntry, 'id'>;
 
 // Define special omit for unions
-type UnionOmit<T, K extends string | number | symbol> = T extends unknown
-	? Omit<T, K>
-	: never;
+// type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+// 	? Omit<T, K>
+// 	: never;
 // Define Entry without the 'id' property
-export type NewEntry = UnionOmit<Entry, 'id'>;
+export type NewEntry = Omit<Entry, 'id'>;

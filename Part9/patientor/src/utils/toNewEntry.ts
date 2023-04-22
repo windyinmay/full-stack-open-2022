@@ -22,20 +22,6 @@ const toNewEntry = ({
 		description: parseDescription(description),
 		...entry,
 	};
-	// if (newEntry.healthCheckRating === '') delete newEntry.healthCheckRating;
-
-	// if (!newEntry.discharge?.criteria && !newEntry.discharge?.date)
-	// 	delete newEntry.discharge;
-
-	// if (
-	// 	!newEntry.employerName &&
-	// 	!newEntry.sickLeave?.startDate &&
-	// 	!newEntry.sickLeave?.endDate
-	// ) {
-	// 	delete newEntry.employerName;
-	// 	delete newEntry.sickLeave;
-	// }
-
 	return newEntry;
 };
 
