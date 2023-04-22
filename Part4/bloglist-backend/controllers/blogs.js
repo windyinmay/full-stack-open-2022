@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
 // the below is promise way, blog.find() method returns a promise
 // and we can access the result of the operation by registering a callback function
@@ -12,7 +13,7 @@ const Blog = require('../models/blog');
 
 //change to async and await
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
   response.json(blogs);
 });
 //get a blog by id
@@ -41,20 +42,25 @@ blogsRouter.get('/:id', async (request, response) => {
 );
 
 blogsRouter.post('/', async (request, response, next) => {
-  const { title, author, url, likes } = request.body;
+  const body = request.body;
+  const user = await User.findById(body.userId);
 
-  const blogObj = new Blog({
-    title,
-    author,
-    url,
-    likes,
+  const blog = new Blog({
+    author: body.author,
+    title: body.title,
+    url: body.url,
+    likes: body.likes,
+    user: user.id
   });
 
   try {
-    if(!title && !url) {
+    if(!body.title && !body.url) {
       response.status(400).json({ error: 'Title or url is missing!' });
     }else {
-      const savedBlog = await blogObj.save();
+      const savedBlog = await blog.save();
+      user.blogs = user.blogs.concat(savedBlog._id);
+      await user.save();
+
       response.status(201).json(savedBlog);
     }
   } catch(exception) {
