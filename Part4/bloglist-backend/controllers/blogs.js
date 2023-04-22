@@ -77,14 +77,17 @@ blogsRouter.put('/:id', async (request, response) => {
     likes,
   };
 
-  const updatedBlog = await Blog.findByIdAndUpdate(
-    request.params.id,
-    blog,
-    { new: true, runValidators: true, context: 'query' }
-  );
+  if(!blog.title && !blog.url) {
+    response.status(400).send({ error: 'title or url missing' });
+  }else {
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      request.params.id,
+      blog,
+      { new: true, runValidators: true, context: 'query' }
+    );
 
-  response.json(updatedBlog);
-
+    response.json(updatedBlog);
+  }
 });
 
 module.exports = blogsRouter;
