@@ -14,6 +14,12 @@ export enum HealthCheckRating {
 	'CriticalRisk' = 3,
 }
 
+// export enum EntryType {
+// 	HealthCheck = 'HealthCheck',
+// 	OccupationalHealthcare = 'OccupationalHealthcare',
+// 	Hospital = 'Hospital',
+// }
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 
 export interface PatientEntry {
@@ -40,8 +46,9 @@ export interface BaseEntry {
 	id: string;
 	date?: string;
 	specialist: string;
-	diagnoseCodes?: Array<DiagnoseEntry['code']>;
+	diagnosisCodes?: Array<DiagnoseEntry['code']>;
 	description: string;
+	type: string;
 }
 
 export interface HospitalEntry extends BaseEntry {
@@ -58,7 +65,7 @@ export interface Discharge {
 export interface OccupationalHealthcareEntry extends BaseEntry {
 	type: 'OccupationalHealthcare';
 	employerName: string;
-	sickLeave: SickLeave;
+	sickLeave?: SickLeave;
 }
 
 export interface SickLeave {
@@ -80,4 +87,4 @@ type UnionOmit<T, K extends string | number | symbol> = T extends unknown
 	? Omit<T, K>
 	: never;
 // Define Entry without the 'id' property
-export type EntryWithoutId = UnionOmit<Entry, 'id'>;
+export type NewEntry = UnionOmit<Entry, 'id'>;

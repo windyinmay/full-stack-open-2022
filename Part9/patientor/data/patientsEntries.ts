@@ -1,7 +1,7 @@
 import { Gender, PatientEntry } from '../src/types';
-import toNewPatientEntry from '../src/utils/toNewPatientEntry';
+// import toNewPatientEntry from '../src/utils/toNewPatientEntry';
 
-const data = [
+const patientEntries: PatientEntry[] = [
 	{
 		id: 'd2773336-f723-11e9-8f0b-362b9e155667',
 		name: 'John McClane',
@@ -113,10 +113,10 @@ const data = [
 	},
 ];
 
-const patientEntries: PatientEntry[] = data.map((obj) => {
-	const object = toNewPatientEntry(obj) as PatientEntry;
-	object.id = obj.id;
-	return object;
-});
+// const patientEntries: PatientEntry[] = data.map((obj) => {
+// 	const object = toNewPatientEntry(obj) as PatientEntry;
+// 	object.id = obj.id;
+// 	return object;
+// });
 
 export default patientEntries;

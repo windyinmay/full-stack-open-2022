@@ -1,4 +1,13 @@
-import { NewPatientEntry, Gender } from '../types';
+import {
+	NewPatientEntry,
+	Gender,
+	// Entry,
+	// BaseEntry,
+	// HospitalEntry,
+	// OccupationalHealthcareEntry,
+	// HealthCheckEntry,
+	// HealthCheckRating,
+} from '../types';
 
 const toNewPatientEntry = (object: unknown): NewPatientEntry => {
 	if (!object || typeof object !== 'object') {
@@ -9,29 +18,33 @@ const toNewPatientEntry = (object: unknown): NewPatientEntry => {
 		'dateOfBirth' in object &&
 		'ssn' in object &&
 		'gender' in object &&
-		'occupation' in object
+		'occupation' in object &&
+		'entries' in object
 	) {
 		console.log(object);
 
-		const newEntry: NewPatientEntry = {
+		const newPatientEntry: NewPatientEntry = {
 			name: parseName(object.name),
 			dateOfBirth: parseDateOfBirth(object.dateOfBirth),
 			ssn: parseSsn(object.ssn),
 			gender: parseGender(object.gender),
 			occupation: parseOccupation(object.occupation),
+			// entries: Array.isArray(object.entries)
+			// 	? object.entries.map(parseEntry)
+			// 	: [],
 			entries: [],
 		};
 
-		return newEntry;
+		return newPatientEntry;
 	}
 	throw new Error('Incorrect data: some fields are missing');
 };
 
-const isString = (text: unknown): text is string => {
+export const isString = (text: unknown): text is string => {
 	return typeof text === 'string' || text instanceof String;
 };
 
-const isDate = (date: string): boolean => {
+export const isDate = (date: string): boolean => {
 	return Boolean(Date.parse(date));
 };
 // const isGender = (str: string): str is Weather => {
@@ -42,6 +55,46 @@ const isGender = (param: string): param is Gender => {
 		.map((v) => v.toString())
 		.includes(param);
 };
+// const isEntry = (entry: unknown): entry is Entry => {
+// 	if (!entry) {
+// 		return false;
+// 	}
+// 	const baseEntry = entry as BaseEntry;
+// 	if (
+// 		!isString(baseEntry.id) ||
+// 		!isString(baseEntry.specialist) ||
+// 		!isString(baseEntry.description) ||
+// 		!Array.isArray(baseEntry.diagnoseCodes) ||
+// 		baseEntry.diagnoseCodes.some((code) => !isString(code))
+// 	) {
+// 		return false;
+// 	}
+// 	switch (baseEntry.type) {
+// 		case 'Hospital':
+// 			const hospitalEntry = baseEntry as HospitalEntry;
+// 			return (
+// 				hospitalEntry.discharge &&
+// 				isString(hospitalEntry.discharge.criteria) &&
+// 				(!hospitalEntry.discharge.date || isDate(hospitalEntry.discharge.date))
+// 			);
+// 		case 'OccupationalHealthcare':
+// 			const occupationalHealthcareEntry =
+// 				baseEntry as OccupationalHealthcareEntry;
+// 			return (
+// 				isString(occupationalHealthcareEntry.employerName) &&
+// 				(!occupationalHealthcareEntry.sickLeave ||
+// 					(isString(occupationalHealthcareEntry.sickLeave.startDate) &&
+// 						isString(occupationalHealthcareEntry.sickLeave.endDate)))
+// 			);
+// 		case 'HealthCheck':
+// 			const healthCheckEntry = baseEntry as HealthCheckEntry;
+// 			return Object.values(HealthCheckRating).includes(
+// 				healthCheckEntry.healthCheckRating
+// 			);
+// 		default:
+// 			return false;
+// 	}
+// };
 
 const parseName = (name: unknown): string => {
 	if (!name || !isString(name)) {
@@ -70,6 +123,14 @@ const parseGender = (gender: unknown): Gender => {
 	}
 	return gender;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// const parseEntry = (entry: unknown): Entry => {
+// 	if (!entry || !isEntry(entry)) {
+// 		throw new Error('Incorrect or missing entry: ' + entry);
+// 	}
+// 	return entry;
+// };
 
 const parseOccupation = (occupation: unknown): string => {
 	if (!occupation || !isString(occupation)) {
