@@ -31,6 +31,19 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 },5000);
 
+const loginUser = auth => {
+  return function (done) {
+    api
+      .post('/api/login')
+      .send({ username: 'root', password: 'sekret' })
+      .expect(200)
+      .end((err, res) => {
+        auth.token = res.body.token;
+        return done();
+      });
+  };
+};
+
 describe('when there is initially some blogs saved', () => {
   test('blogs are returned as json', async () => {
     await api
@@ -140,26 +153,52 @@ describe('addition of a new blog', () => {
     const blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
   });
+
+
+  // describe('deletion of a blog', () => {
+  //   //not working yet at the moment, go back and check later
+  //   test('deleting a single blog by id', async () => {
+  //     const blogToBeDeleted = await helper.blogsInDb();
+  //     const idOfBlogDeleted = blogToBeDeleted[0].id;
+
+  //     await api
+  //       .delete(`/api/blogs/${idOfBlogDeleted}`)
+  //       .expect(204);
+
+  //     const blogsAtEnd = await helper.blogsInDb();
+  //     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+
+  //     const idsAtEnd = blogsAtEnd.map(blog => blog.id);
+  //     expect(idsAtEnd).not.toContain(idOfBlogDeleted);
+  //     debug(`Value of idOfBlogDeleted: ${idOfBlogDeleted}`);
+  //   });
+  // });
+  const authentication = {};
+
+  beforeEach(loginUser(authentication));
+  test('adding a blog fails with status 401 if a token is not provided', async () => {
+    const newBlog = {
+      title: 'testing the populate method',
+      author: 'anhpham',
+      url: 'http://hhaha',
+      likes: 12
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(401);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    const titles = blogsAtEnd.map(r => r.title);
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+    expect(titles).not.toContain(
+      'testing the populate method'
+    );
+  });
 });
 
-// describe('deletion of a blog', () => {
-//   //not working yet at the moment, go back and check later
-//   test('deleting a single blog by id', async () => {
-//     const blogToBeDeleted = await helper.blogsInDb();
-//     const idOfBlogDeleted = blogToBeDeleted[0].id;
-
-//     await api
-//       .delete(`/api/blogs/${idOfBlogDeleted}`)
-//       .expect(204);
-
-//     const blogsAtEnd = await helper.blogsInDb();
-//     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
-
-//     const idsAtEnd = blogsAtEnd.map(blog => blog.id);
-//     expect(idsAtEnd).not.toContain(idOfBlogDeleted);
-//     debug(`Value of idOfBlogDeleted: ${idOfBlogDeleted}`);
-//   });
-// });
 
 describe('updating a blog', () => {
   test('updating the information of an individual blog post', async () => {
