@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
-const { tokenExtractor } = require('../utils/middleware');
+const { userExtractor } = require('../utils/middleware');
 
 // the below is promise way, blog.find() method returns a promise
 // and we can access the result of the operation by registering a callback function
@@ -13,13 +13,13 @@ const { tokenExtractor } = require('../utils/middleware');
 //   });
 // });
 
-const getTokenFrom = request => {
-  const authorization = request.get('authorization');
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '');
-  }
-  return null;
-};
+// const getTokenFrom = request => {
+//   const authorization = request.get('authorization');
+//   if (authorization && authorization.startsWith('Bearer ')) {
+//     return authorization.replace('Bearer ', '');
+//   }
+//   return null;
+// };
 
 
 //change to async and await
@@ -52,14 +52,15 @@ blogsRouter.get('/:id', async (request, response) => {
   //   .catch((error) => next(error));
 );
 
-blogsRouter.post('/',tokenExtractor, async (request, response, next) => {
+blogsRouter.post('/',userExtractor, async (request, response, next) => {
   const body = request.body;
 
-  const decodedToken = jwt.verify(request.token, process.env.SECRET);
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' });
-  }
-  const user = await User.findById(decodedToken.id);
+  // const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  // if (!decodedToken.id) {
+  //   return response.status(401).json({ error: 'token invalid' });
+  // }
+  const user = await User.findById(request.user.id);
+  blog.user = user._id;
 
   const blog = new Blog({
     author: body.author,
@@ -73,6 +74,7 @@ blogsRouter.post('/',tokenExtractor, async (request, response, next) => {
     if(!body.title && !body.url) {
       response.status(400).json({ error: 'Title or url is missing!' });
     }else {
+      blog.likes = blog.likes ? blog.likes : 0;
       const savedBlog = await blog.save();
       user.blogs = user.blogs.concat(savedBlog._id);
       await user.save();
@@ -84,10 +86,21 @@ blogsRouter.post('/',tokenExtractor, async (request, response, next) => {
   }
 });
 
-blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params._id);
-  response.status(204).end();
+blogsRouter.delete('/:id', userExtractor, async (request, response) => {
+  const blog = await Blog.findById(request.params.id);
+  const user = await User.findById(request.user.id);
+
+  if (blog.user.toString() === request.user.id.toString()) {
+    await Blog.findByIdAndRemove(request.params.id);
+    user.blogs = user.blogs.filter(u => u.toString() !== request.user.id);
+    await user.save();
+
+    response.status(204).end();
+  } else {
+    return response.status(401).json({ error: 'blog can only be deleted by the right user' });
+  }
 });
+
 
 blogsRouter.put('/:id', async (request, response) => {
   const { title, author, url, likes } = request.body;
