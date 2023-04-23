@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
+const { tokenExtractor } = require('../utils/middleware');
 
 // the below is promise way, blog.find() method returns a promise
 // and we can access the result of the operation by registering a callback function
@@ -51,10 +52,10 @@ blogsRouter.get('/:id', async (request, response) => {
   //   .catch((error) => next(error));
 );
 
-blogsRouter.post('/', async (request, response, next) => {
+blogsRouter.post('/',tokenExtractor, async (request, response, next) => {
   const body = request.body;
 
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' });
   }
