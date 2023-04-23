@@ -7,6 +7,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sd
  "title": "testing the valid token",
   "author": "anhpham",
   "url": "http://hhaha/ssh",
-  "likes": 121,
+  "likes": 12,
   "userId": "6444732aebf2ac3e4580b64a"
 }
