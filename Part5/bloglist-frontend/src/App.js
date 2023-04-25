@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+
 import blogService from "./services/blogs";
+import loginService from './services/login'
 
 import Filter from "./components/Filter";
 import Notification from "./components/Notification";
@@ -7,6 +9,7 @@ import Blogs from "./components/Blogs";
 import BlogForm from "./components/BlogForm";
 
 import Container from "@mui/material/Container";
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -16,6 +19,9 @@ const App = () => {
     url: "",
     likes: 0,
   });
+  const [user, setUser] = useState(null);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [filter, setFilter] = useState("");
   const [updateMsg, setUpdateMsg] = useState(null);
 
@@ -31,6 +37,48 @@ const App = () => {
         console.log("fail");
       });
   }, []);
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    
+    try {
+      const user = await loginService.login({
+        username, password,
+      })
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      setUpdateMsg('Wrong credentials')
+      setTimeout(() => {
+        setUpdateMsg(null)
+      }, 5000)
+    }
+  }
+
+  const loginForm = () => (
+    <form onSubmit={handleLogin}>
+      <div>
+        username
+          <input
+          type="text"
+          value={username}
+          name="Username"
+          onChange={({ target }) => setUsername(target.value)}
+        />
+      </div>
+      <div>
+        password
+          <input
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
+        />
+      </div>
+      <button type="submit">login</button>
+    </form>      
+  )
 
   const handleFormChange = (e) =>
     setNewBlog({ ...newBlog, [e.target.name]: e.target.value });
@@ -110,28 +158,38 @@ const App = () => {
     blogs.length > 0 &&
     blogs.filter((blog) => blog.title.toLowerCase().includes(filter));
 
+  const blogForm = () => (
+    <form onSubmit={addBlog}>
+      <input 
+        value={newBlog}
+        onChange={handleFormChange}/>
+      <button type="submit">Save</button>
+    </form>
+  )
   return (
-    <Container
-      sx={{
-        marginLeft: 2,
-        width: "auto",
-        height: "100vh",
-      }}
-    >
+    <div>
+  
       <h1>Blog list</h1>
       <Notification message={updateMsg} />
-      <Filter handleFilter={handleFilter} />
-      <h2>Add a new blog</h2>
-      <BlogForm
-        newBlog={newBlog}
-        handleFormChange={handleFormChange}
-        addBlog={addBlog}
-      />
-      <h2>List of the blogs</h2>
-      {filterTitles.length > 0 && (
-        <Blogs blogs={filterTitles} deleteBlog={deleteBlog} />
+
+      {user === null ? loginForm() : (
+      <div>
+        <p>{user.name} logged in</p>
+        <Filter handleFilter={handleFilter} />
+        <h2>Add a new blog</h2>
+        <BlogForm
+          newBlog={newBlog}
+          handleFormChange={handleFormChange}
+          addBlog={addBlog}
+        />
+        <h2>List of the blogs</h2>
+        {filterTitles.length > 0 && (
+          <Blogs blogs={filterTitles} deleteBlog={deleteBlog} />
+        )}
+      </div>
       )}
-    </Container>
+    </div>
+    // </Container>
   );
 };
 
