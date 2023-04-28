@@ -13,10 +13,10 @@ content-type: application/json
   "password": "abcxyz"
 }
 
-{
- "userId": "6444732aebf2ac3e4580b64a",
- "url": "http://hhaha",
- "author": "anhpham",
- "title": "testing the populate method",
- "likes": 12
-}
+# {
+#  "userId": "6444732aebf2ac3e4580b64a",
+#  "url": "http://hhaha",
+#  "author": "anhpham",
+#  "title": "testing the populate method",
+#  "likes": 12
+# }
